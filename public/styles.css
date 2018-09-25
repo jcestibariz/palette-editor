@@ -1,3 +1,9 @@
+:root {
+	--light-blue-800: #0277bd;
+	--gray-200: #eeeeee;
+	--gray-500: #9e9e9e;
+}
+
 body, input, textarea {
 	font-family: Noto, sans-serif;
 	font-size: 16px;
@@ -20,7 +26,8 @@ div {
 	grid-template-areas:
 		'ld ds'
 		'pl pl'
-		'bg bg';
+		'bg bg'
+		'ep ep';
 }
 
 .App__palette {
@@ -31,6 +38,15 @@ div {
 .App__bg {
 	flex-direction: column;
 	grid-area: bg;
+}
+
+.App__editPalette {
+	flex-direction: column;
+	grid-area: ep;
+}
+
+.App__slider {
+	flex-direction: column;
 }
 
 .LabDisplay {
@@ -136,4 +152,73 @@ div {
 .Display__deltaE {
 	font-size: 12px;
 	margin-left: 8px;
+}
+
+.Slider {
+	flex-direction: column;
+}
+
+.Slider--disabled {
+	color: var(--gray-500)
+}
+
+.Slider__text {
+	text-align: center;
+}
+
+.Slider__track {
+	position: relative;
+	height: 8px;
+	border-radius: 4px;
+	background-color: var(--gray-200);
+	margin: 0 8px;
+}
+
+.Slider__bar {
+	height: 8px;
+	border-radius: 4px;
+	background-color: var(--gray-500);
+	transition: background-color .2s ease-in-out;
+}
+
+:not(.Slider--disabled) > :hover > .Slider__bar {
+	background-color: var(--light-blue-800);
+}
+
+.Slider__dot {
+	position: absolute;
+	top: -2px;
+	width: 12px;
+	height: 12px;
+	border-radius: 100%;
+	background-color: var(--light-blue-800);
+	cursor: ew-resize;
+	transform: translateX(-6px);
+	opacity: 0;
+	will-change: left, opacity;
+	transition: opacity .2s ease-in-out;
+}
+
+:not(.Slider--disabled) > :hover > .Slider__dot {
+	opacity: 1;
+}
+
+.Slider__thumb {
+	width: 12px;
+	height: 12px;
+	border-radius: 100%;
+	background-color: var(--light-blue-800);
+	opacity: .25;
+	will-change: transform;
+	transition: transform .1s ease-in-out;
+}
+
+:not(.Slider--disabled) > .Slider__thumb:focus, .Slider__thumb:active {
+	transform: scale(3);
+}
+
+.Slider__bottom {
+	flex-direction: row;
+	justify-content: space-between;
+	margin: 0 8px;
 }

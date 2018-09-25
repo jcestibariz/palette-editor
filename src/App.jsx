@@ -3,6 +3,7 @@ import chroma from 'chroma-js';
 
 import LabDisplay from './LabDisplay';
 import Display from './Display';
+import Slider from './Slider';
 
 const toChroma = c => chroma(c.trim());
 
@@ -10,6 +11,9 @@ class App extends Component {
 	state = {
 		palette: ['#808080', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'].map(toChroma),
 		bg: chroma('#ffffff'),
+		originalPalette: null,
+		lightness: 0,
+		chroma: 0,
 	};
 
 	updatePalette = e => {
@@ -30,8 +34,38 @@ class App extends Component {
 		}
 	};
 
+	startChange = () => this.setState({originalPalette: this.state.palette});
+
+	applyChange = () => this.setState({originalPalette: null, lightness: 0, chroma: 0});
+
+	cancelChange = () => this.setState({palette: this.state.originalPalette, originalPalette: null, lightness: 0, chroma: 0});
+
+	updateLightness = v => {
+		const originalPalette = this.state.originalPalette;
+		this.setState({
+			lightness: v,
+			palette: this.state.palette.map((c, i) => {
+				const lch = c.lch();
+				lch[0] = originalPalette[i].lch()[0] + v;
+				return chroma.lch(lch);
+			}),
+		});
+	};
+
+	updateChroma = v => {
+		const originalPalette = this.state.originalPalette;
+		this.setState({
+			chroma: v,
+			palette: this.state.palette.map((c, i) => {
+				const lch = c.lch();
+				lch[1] = Math.max(originalPalette[i].lch()[1] + v, 0);
+				return chroma.lch(lch);
+			})
+		});
+	};
+
 	render() {
-		const {palette, bg} = this.state;
+		const {palette, bg, originalPalette, lightness, chroma} = this.state;
 		return (
 			<div className="App">
 				<LabDisplay palette={palette}/>
@@ -44,6 +78,28 @@ class App extends Component {
 					<div>Background</div>
 					<input value={bg} onChange={this.updateBG}/>
 				</div>
+
+				{originalPalette ? (
+						<div className="App__editPalette">
+							<div className="App__slider">
+								<div>Lightness</div>
+								<Slider value={lightness} min={-50} max={50}
+										onValueChange={this.updateLightness}/>
+							</div>
+							<div className="App__slider">
+								<div>Chroma</div>
+								<Slider value={chroma} min={-50} max={50}
+										onValueChange={this.updateChroma}/>
+							</div>
+							<div>
+								<button onClick={this.applyChange}>Apply</button>
+								<button onClick={this.cancelChange}>Cancel</button>
+							</div>
+						</div>
+				) : (
+						<div className="App__editPalette"><button onClick={this.startChange}>Update Palette</button></div>
+				)
+				}
 			</div>
 		);
 	}
