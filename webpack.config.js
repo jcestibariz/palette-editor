@@ -1,10 +1,5 @@
-const {resolve} = require('path');
-
 module.exports = {
 	entry: './src/index.jsx',
-	output: {
-		path: resolve(__dirname, 'dist'),
-	},
 	resolve: {
 		extensions: ['.js', '.jsx'],
 	},

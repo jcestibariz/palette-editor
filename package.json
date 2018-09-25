@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Edit palettes in L*a*b* space",
   "scripts": {
-    "start": "webpack-dev-server --open --port 8090 --mode development --content-base public"
+    "start": "webpack-dev-server --open --port 8090 --mode development --content-base public",
+    "build": "webpack --mode production"
   },
   "license": "ISC",
   "dependencies": {
