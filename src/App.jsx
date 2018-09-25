@@ -1,4 +1,4 @@
-import {h, Component} from 'preact';
+import preact, {Component} from 'preact';
 import chroma from 'chroma-js';
 
 import LabDisplay from './LabDisplay';

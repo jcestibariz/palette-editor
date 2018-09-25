@@ -1,4 +1,4 @@
-import { h, render } from 'preact';
+import preact, {render} from 'preact';
 
 import App from './App';
 

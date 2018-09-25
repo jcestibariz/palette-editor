@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import preact from 'preact';
 import PropTypes from 'prop-types';
 import {contrast, deltaE} from 'chroma-js';
 

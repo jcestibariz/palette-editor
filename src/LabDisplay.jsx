@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import preact from 'preact';
 import PropTypes from 'prop-types';
 
 const getABStyle = color => ({left: 160 + color.a, top: 160 - color.b, backgroundColor: color.hex});

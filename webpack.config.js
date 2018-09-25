@@ -19,7 +19,7 @@ module.exports = {
 						options: {
 							cacheDirectory: true,
 							presets: [['env', {modules: false, useBuiltIns: true, targets: {browsers: 'chrome >= 68'}}], 'react', 'stage-2'],
-							plugins: [['transform-react-jsx', {pragma: 'h'}]],
+							plugins: [['transform-react-jsx', {pragma: 'preact.h'}]],
 						},
 					},
 				],
