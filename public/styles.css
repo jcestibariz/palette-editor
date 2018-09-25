@@ -1,0 +1,139 @@
+body, input, textarea {
+	font-family: Noto, sans-serif;
+	font-size: 16px;
+}
+
+body {
+	display: flex;
+}
+
+div {
+	display: flex;
+}
+
+.App {
+	display: grid;
+	align-self: flex-start;
+	grid-gap: 20px;
+	grid-template-columns: min-content;
+	grid-auto-rows: min-content;
+	grid-template-areas:
+		'ld ds'
+		'pl pl'
+		'bg bg';
+}
+
+.App__palette {
+	flex-direction: column;
+	grid-area: pl;
+}
+
+.App__bg {
+	flex-direction: column;
+	grid-area: bg;
+}
+
+.LabDisplay {
+	grid-area: ld;
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: min-content;
+	grid-auto-rows: min-content;
+	grid-template-areas:
+			'ab lp'
+			'cp .';
+}
+
+.ABPlane {
+	position: relative;
+	width: 321px;
+	height: 321px;
+	border: 1px solid rgba(0, 0, 0, .05);
+	grid-area: ab;
+}
+
+.ABPlane__x {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 160px;
+	height: 1px;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.ABPlane__y {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 160px;
+	width: 1px;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.ABPlane__dot {
+	position: absolute;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	transform: translate(-4px, -4px);
+}
+
+.LPlane {
+	position: relative;
+	width: 34px;
+	border: 1px solid rgba(0, 0, 0, .05);
+	grid-area: lp;
+}
+
+.LPlane__dot {
+	position: absolute;
+	left: 2px;
+	width: 30px;
+	height: 3px;
+	transform: translateY(-1px);
+}
+
+.CPlane {
+	position: relative;
+	height: 34px;
+	border: 1px solid rgba(0, 0, 0, .05);
+	grid-area: cp;
+}
+
+.CPlane__dot {
+	position: absolute;
+	top: 2px;
+	width: 3px;
+	height: 30px;
+	transform: translateX(-1px);
+}
+
+.ABPlane__label,
+.LPlane__label,
+.CPlane__label {
+	font-size: 12px;
+	color: rgba(0, 0, 0, .6);
+	margin-left: 1px;
+	margin-top: 1px;
+}
+
+.Display {
+	flex-direction: column;
+	padding: 15px;
+	grid-area: ds;
+}
+
+.Display__color {
+	align-items: center;
+}
+
+.Display__bar {
+	width: 150px;
+	height: 30px;
+}
+
+.Display__contrast,
+.Display__deltaE {
+	font-size: 12px;
+	margin-left: 8px;
+}

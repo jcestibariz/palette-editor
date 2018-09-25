@@ -1,0 +1,18 @@
+{
+  "env": {
+    "test": {
+      "sourceMaps": "both",
+      "presets": [
+        ["env", {"useBuiltIns": true}], "react", "stage-2"
+      ]
+    }
+  },
+  "plugins": [
+    [
+      "transform-react-jsx",
+      {
+        "pragma": "h"
+      }
+    ]
+  ]
+}
