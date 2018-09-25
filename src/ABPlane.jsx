@@ -1,10 +1,7 @@
 import {h} from 'preact';
 import PropTypes from 'prop-types';
 
-const getStyle = color => {
-	const lab = color.lab();
-	return {left: 160 + lab[1], top: 160 - lab[2], backgroundColor: color.hex()};
-};
+const getStyle = color => ({left: 160 + color.a, top: 160 - color.b, backgroundColor: color.hex});
 
 const ABPlane = ({palette}) => (
 	<div className="ABPlane">

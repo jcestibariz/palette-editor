@@ -1,7 +1,7 @@
 import {h} from 'preact';
 import PropTypes from 'prop-types';
 
-const getStyle = color => ({left: 25 + 2 * color.lch()[1], backgroundColor: color.hex()});
+const getStyle = color => ({left: 25 + 2 * color.c, backgroundColor: color.hex});
 
 const CPlane = ({palette}) => (
 	<div className="CPlane">
