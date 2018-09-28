@@ -16,20 +16,26 @@ const LabDisplay = ({palette}) => {
 	return (
 		<div className="LabDisplay">
 			<div className="ABPlane">
-				<div className="ABPlane__x"/>
-				<div className="ABPlane__y"/>
+				<div className="ABPlane__x" />
+				<div className="ABPlane__y" />
 				<div className="ABPlane__label">a*b*</div>
-				{colors.map(c => <div className="ABPlane__dot" style={getABStyle(c)}/>)}
+				{colors.map(c => (
+					<div className="ABPlane__dot" style={getABStyle(c)} />
+				))}
 			</div>
 
 			<div className="LPlane">
 				<div className="LPlane__label">L*</div>
-				{colors.map(c => <div className="LPlane__dot" style={getLStyle(c)}/>)}
+				{colors.map(c => (
+					<div className="LPlane__dot" style={getLStyle(c)} />
+				))}
 			</div>
 
 			<div className="CPlane">
 				<div className="CPlane__label">c*</div>
-				{colors.map(c => <div className="CPlane__dot" style={getCStyle(c)}/>)}
+				{colors.map(c => (
+					<div className="CPlane__dot" style={getCStyle(c)} />
+				))}
 			</div>
 		</div>
 	);

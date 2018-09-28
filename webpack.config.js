@@ -13,12 +13,16 @@ module.exports = {
 						loader: 'babel-loader',
 						options: {
 							cacheDirectory: true,
-							presets: [['env', {modules: false, useBuiltIns: true, targets: {browsers: 'chrome >= 68'}}], 'react', 'stage-2'],
+							presets: [
+								['env', {modules: false, useBuiltIns: true, targets: {browsers: 'chrome >= 68'}}],
+								'react',
+								'stage-2',
+							],
 							plugins: [['transform-react-jsx', {pragma: 'preact.h'}]],
 						},
 					},
 				],
 			},
-		]
-	}
+		],
+	},
 };

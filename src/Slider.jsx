@@ -15,8 +15,7 @@ class Slider extends Component {
 	handleTrackClick = event => {
 		if (!this.props.disabled) {
 			let p = event.clientX - this.trackStart;
-			this.props.onValueChange(
-					Math.round(this.props.min + p / this.factor));
+			this.props.onValueChange(Math.round(this.props.min + p / this.factor));
 		}
 	};
 
@@ -39,8 +38,7 @@ class Slider extends Component {
 				requestAnimationFrame(() => {
 					this.scheduled = false;
 					this.trackElement.firstChild.style.left = this.current + 'px';
-					this.props.onValueChange(Math.round(
-							this.props.min + this.current / this.factor));
+					this.props.onValueChange(Math.round(this.props.min + this.current / this.factor));
 				});
 			}
 		}
@@ -92,9 +90,9 @@ class Slider extends Component {
 				<div className="Slider__text">{value}</div>
 				<div className="Slider__track" ref={this.setTrackElement} onClick={this.handleTrackClick}>
 					<div className="Slider__dot" onMouseDown={this.handleMouseDown}>
-						<div className="Slider__thumb"/>
+						<div className="Slider__thumb" />
 					</div>
-					<div className="Slider__bar"/>
+					<div className="Slider__bar" />
 				</div>
 				<div className="Slider__bottom">
 					<div className="Slider__min">{min}</div>

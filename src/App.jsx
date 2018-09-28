@@ -18,7 +18,10 @@ class App extends Component {
 
 	updatePalette = e => {
 		try {
-			const palette = e.target.value.replace(/['"]/g, '').split(',').map(toChroma);
+			const palette = e.target.value
+				.replace(/['"]/g, '')
+				.split(',')
+				.map(toChroma);
 			this.setState({palette});
 		} catch (e) {
 			alert(e);
@@ -28,7 +31,7 @@ class App extends Component {
 	updateBG = e => {
 		try {
 			const bg = chroma(e.target.value);
-			this.setState({bg})
+			this.setState({bg});
 		} catch (e) {
 			alert(e);
 		}
@@ -38,7 +41,8 @@ class App extends Component {
 
 	applyChange = () => this.setState({originalPalette: null, lightness: 0, chroma: 0});
 
-	cancelChange = () => this.setState({palette: this.state.originalPalette, originalPalette: null, lightness: 0, chroma: 0});
+	cancelChange = () =>
+		this.setState({palette: this.state.originalPalette, originalPalette: null, lightness: 0, chroma: 0});
 
 	updateLightness = v => {
 		const originalPalette = this.state.originalPalette;
@@ -60,7 +64,7 @@ class App extends Component {
 				const lch = c.lch();
 				lch[1] = Math.max(originalPalette[i].lch()[1] + v, 0);
 				return chroma.lch(lch);
-			})
+			}),
 		});
 	};
 
@@ -68,38 +72,37 @@ class App extends Component {
 		const {palette, bg, originalPalette, lightness, chroma} = this.state;
 		return (
 			<div className="App">
-				<LabDisplay palette={palette}/>
-				<Display palette={palette} bg={bg}/>
+				<LabDisplay palette={palette} />
+				<Display palette={palette} bg={bg} />
 				<div className="App__palette">
 					<div>Palette</div>
-					<textarea value={palette.map(c => '\'' + c + '\'').join(',')} onChange={this.updatePalette}/>
+					<textarea value={palette.map(c => "'" + c + "'").join(',')} onChange={this.updatePalette} />
 				</div>
 				<div className="App__bg">
 					<div>Background</div>
-					<input value={bg} onChange={this.updateBG}/>
+					<input value={bg} onChange={this.updateBG} />
 				</div>
 
 				{originalPalette ? (
-						<div className="App__editPalette">
-							<div className="App__slider">
-								<div>Lightness</div>
-								<Slider value={lightness} min={-50} max={50}
-										onValueChange={this.updateLightness}/>
-							</div>
-							<div className="App__slider">
-								<div>Chroma</div>
-								<Slider value={chroma} min={-50} max={50}
-										onValueChange={this.updateChroma}/>
-							</div>
-							<div>
-								<button onClick={this.applyChange}>Apply</button>
-								<button onClick={this.cancelChange}>Cancel</button>
-							</div>
+					<div className="App__editPalette">
+						<div className="App__slider">
+							<div>Lightness</div>
+							<Slider value={lightness} min={-50} max={50} onValueChange={this.updateLightness} />
 						</div>
+						<div className="App__slider">
+							<div>Chroma</div>
+							<Slider value={chroma} min={-50} max={50} onValueChange={this.updateChroma} />
+						</div>
+						<div>
+							<button onClick={this.applyChange}>Apply</button>
+							<button onClick={this.cancelChange}>Cancel</button>
+						</div>
+					</div>
 				) : (
-						<div className="App__editPalette"><button onClick={this.startChange}>Update Palette</button></div>
-				)
-				}
+					<div className="App__editPalette">
+						<button onClick={this.startChange}>Update Palette</button>
+					</div>
+				)}
 			</div>
 		);
 	}
