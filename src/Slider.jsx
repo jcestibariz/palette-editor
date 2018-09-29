@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 class Slider extends Component {
 	static propTypes = {
+		className: PropTypes.string,
 		min: PropTypes.number,
 		max: PropTypes.number,
 		value: PropTypes.number,
@@ -15,7 +16,7 @@ class Slider extends Component {
 	handleTrackClick = event => {
 		if (!this.props.disabled) {
 			let p = event.clientX - this.trackStart;
-			this.props.onValueChange(Math.round(this.props.min + p / this.factor));
+			this.props.onValueChange(this.props.min + p / this.factor);
 		}
 	};
 
@@ -24,6 +25,7 @@ class Slider extends Component {
 		if (!this.props.disabled) {
 			this.active = true;
 			this.offset = event.pageX - this.current;
+			this.trackElement.focus();
 			document.addEventListener('mousemove', this.handleMouseMove);
 			document.addEventListener('mouseup', this.handleMouseUp);
 		}
@@ -38,7 +40,7 @@ class Slider extends Component {
 				requestAnimationFrame(() => {
 					this.scheduled = false;
 					this.trackElement.firstChild.style.left = this.current + 'px';
-					this.props.onValueChange(Math.round(this.props.min + this.current / this.factor));
+					this.props.onValueChange(this.props.min + this.current / this.factor);
 				});
 			}
 		}
@@ -49,6 +51,33 @@ class Slider extends Component {
 		this.active = false;
 		document.removeEventListener('mousemove', this.handleMouseMove);
 		document.removeEventListener('mouseup', this.handleMouseUp);
+	};
+
+	handleKeyDown = event => {
+		const {min, max, value, onValueChange} = this.props;
+		const step = (event.ctrlKey ? 10 : 1) / this.factor;
+		switch (event.code) {
+			case 'ArrowLeft':
+				if (value !== min) {
+					onValueChange(Math.max(value - step, min));
+				}
+				break;
+			case 'ArrowRight':
+				if (value !== max) {
+					onValueChange(Math.min(value + step, max));
+				}
+				break;
+			case 'Home':
+				if (value !== min) {
+					onValueChange(min);
+				}
+				break;
+			case 'End':
+				if (value !== max) {
+					onValueChange(max);
+				}
+				break;
+		}
 	};
 
 	componentDidMount() {
@@ -79,25 +108,19 @@ class Slider extends Component {
 	}
 
 	render() {
-		const {min, max, value, disabled} = this.props;
-		let className = 'Slider';
-		if (disabled) {
-			className += ' Slider--disabled';
-		}
+		const {className, disabled} = this.props;
 
 		return (
-			<div className={className}>
-				<div className="Slider__text">{value}</div>
-				<div className="Slider__track" ref={this.setTrackElement} onClick={this.handleTrackClick}>
-					<div className="Slider__dot" onMouseDown={this.handleMouseDown}>
-						<div className="Slider__thumb" />
-					</div>
-					<div className="Slider__bar" />
+			<div
+				className={'Slider' + (disabled ? ' Slider--disabled' : '') + (className ? ' ' + className : '')}
+				tabIndex={0}
+				ref={this.setTrackElement}
+				onClick={this.handleTrackClick}
+				onKeyDown={this.handleKeyDown}>
+				<div className="Slider__dot" onMouseDown={this.handleMouseDown}>
+					<div className="Slider__thumb" />
 				</div>
-				<div className="Slider__bottom">
-					<div className="Slider__min">{min}</div>
-					<div className="Slider__max">{max}</div>
-				</div>
+				<div className="Slider__bar" />
 			</div>
 		);
 	}

@@ -3,17 +3,31 @@ import chroma from 'chroma-js';
 
 import LabDisplay from './LabDisplay';
 import Display from './Display';
+import ColorEditor from './ColorEditor';
 import Slider from './Slider';
 
 const toChroma = c => chroma(c.trim());
 
 class App extends Component {
 	state = {
-		palette: ['#808080', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'].map(toChroma),
+		palette: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#808080'].map(toChroma),
 		bg: chroma('#ffffff'),
+		current: 0,
 		originalPalette: null,
 		lightness: 0,
 		chroma: 0,
+	};
+
+	replaceColor = color => {
+		const {palette, current} = this.state;
+		palette[current] = color;
+		this.setState({palette});
+	};
+
+	addColor = color => {
+		const {palette} = this.state;
+		palette.push(color);
+		this.setState({palette, current: palette.length - 1});
 	};
 
 	updatePalette = e => {
@@ -22,7 +36,7 @@ class App extends Component {
 				.replace(/['"]/g, '')
 				.split(',')
 				.map(toChroma);
-			this.setState({palette});
+			this.setState({palette, current: 0});
 		} catch (e) {
 			alert(e);
 		}
@@ -69,11 +83,18 @@ class App extends Component {
 	};
 
 	render() {
-		const {palette, bg, originalPalette, lightness, chroma} = this.state;
+		const {palette, bg, current, originalPalette, lightness, chroma} = this.state;
 		return (
 			<div className="App">
 				<LabDisplay palette={palette} />
 				<Display palette={palette} bg={bg} />
+				<ColorEditor
+					className="App__editor"
+					color={palette[current]}
+					onReplace={this.replaceColor}
+					onAdd={this.addColor}
+				/>
+
 				<div className="App__palette">
 					<div>Palette</div>
 					<textarea value={palette.map(c => "'" + c + "'").join(',')} onChange={this.updatePalette} />
