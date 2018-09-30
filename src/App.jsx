@@ -4,7 +4,7 @@ import chroma from 'chroma-js';
 import LabDisplay from './LabDisplay';
 import Display from './Display';
 import ColorEditor from './ColorEditor';
-import Slider from './Slider';
+import PaletteEditor from './PaletteEditor';
 
 const toLCH = c => chroma(c.trim()).lch();
 
@@ -20,8 +20,6 @@ class App extends Component {
 		bg: chroma('#ffffff'),
 		current: 0,
 		originalPalette: null,
-		l: 0,
-		c: 0,
 	};
 
 	replaceColor = color => {
@@ -59,25 +57,31 @@ class App extends Component {
 
 	startChange = () => this.setState({originalPalette: this.state.palette});
 
-	applyChange = () => this.setState({originalPalette: null, l: 0, c: 0});
+	applyChange = () => this.setState({originalPalette: null});
 
-	cancelChange = () => this.setState({palette: this.state.originalPalette, originalPalette: null, l: 0, c: 0});
+	cancelChange = () => this.setState({palette: this.state.originalPalette, originalPalette: null});
 
-	updateLightness = v => {
+	updateLightness = l => {
 		const {palette, originalPalette} = this.state;
-		this.setState({palette: palette.map((c, i) => update(c, 0, originalPalette[i][0] + v)), l: v});
+		this.setState({palette: palette.map((e, i) => update(e, 0, originalPalette[i][0] + l))});
 	};
 
-	updateChroma = v => {
+	updateChroma = c => {
 		const {palette, originalPalette} = this.state;
 		this.setState({
-			palette: palette.map((c, i) => update(c, 1, isNaN(c[2]) ? 0 : Math.max(originalPalette[i][1] + v, 0))),
-			c: v,
+			palette: palette.map((e, i) => update(e, 1, isNaN(e[2]) ? 0 : Math.max(originalPalette[i][1] + c, 0))),
+		});
+	};
+
+	updateHue = h => {
+		const {palette, originalPalette} = this.state;
+		this.setState({
+			palette: palette.map((e, i) => update(e, 2, isNaN(e[2]) ? NaN : originalPalette[i][2] + (h % 360))),
 		});
 	};
 
 	render() {
-		const {palette, bg, current, originalPalette, l, c} = this.state;
+		const {palette, bg, current, originalPalette} = this.state;
 		return (
 			<div className="App">
 				<LabDisplay palette={palette} />
@@ -99,23 +103,17 @@ class App extends Component {
 				</div>
 
 				{originalPalette ? (
-					<div className="App__editPalette">
-						<div className="App__slider">
-							<div>Lightness</div>
-							<Slider value={l} min={-50} max={50} onValueChange={this.updateLightness} />
-						</div>
-						<div className="App__slider">
-							<div>Chroma</div>
-							<Slider value={c} min={-50} max={50} onValueChange={this.updateChroma} />
-						</div>
-						<div>
-							<button onClick={this.applyChange}>Apply</button>
-							<button onClick={this.cancelChange}>Cancel</button>
-						</div>
-					</div>
+					<PaletteEditor
+						className="App__editPalette"
+						onLightnessChange={this.updateLightness}
+						onChromaChange={this.updateChroma}
+						onHueChange={this.updateHue}
+						onApply={this.applyChange}
+						onCancel={this.cancelChange}
+					/>
 				) : (
 					<div className="App__editPalette">
-						<button onClick={this.startChange}>Update Palette</button>
+						<button onClick={this.startChange}>Alter Palette</button>
 					</div>
 				)}
 			</div>

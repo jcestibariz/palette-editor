@@ -48,12 +48,7 @@ div {
 }
 
 .App__editPalette {
-	flex-direction: column;
 	grid-area: ep;
-}
-
-.App__slider {
-	flex-direction: column;
 }
 
 .LabDisplay {
@@ -261,5 +256,37 @@ div {
 }
 
 .ColorEditor__buttons > :not(:last-child) {
+	margin-bottom: 4px;
+}
+
+.PaletteEditor__controls {
+	flex-direction: column;
+	flex: 1;
+	margin-right: 8px;
+	justify-content: space-between;
+}
+
+.PaletteEditor__control {
+	align-items: center;
+}
+
+.PaletteEditor__controlLabel {
+	width: 12px;
+	color: rgba(0, 0, 0, 0.6);
+}
+
+.PaletteEditor__slider {
+	flex: 1;
+}
+
+.PaletteEditor__slider {
+	flex-direction: column;
+}
+
+.PaletteEditor__buttons {
+	flex-direction: column;
+}
+
+.PaletteEditor__buttons > :not(:last-child) {
 	margin-bottom: 4px;
 }
