@@ -96,34 +96,50 @@ div {
 	transform: translate(-4px, -4px);
 }
 
+.ABPlane__dot--current {
+	width: 13px;
+	height: 13px;
+	transform: translate(-6px, -6px);
+}
+
 .LPlane {
 	position: relative;
-	width: 34px;
+	width: 38px;
 	border: 1px solid rgba(0, 0, 0, 0.05);
 	grid-area: lp;
 }
 
 .LPlane__dot {
 	position: absolute;
-	left: 2px;
+	left: 4px;
 	width: 30px;
 	height: 3px;
 	transform: translateY(-1px);
 }
 
+.LPlane__dot--current {
+	left: 2px;
+	width: 34px;
+}
+
 .CPlane {
 	position: relative;
-	height: 34px;
+	height: 38px;
 	border: 1px solid rgba(0, 0, 0, 0.05);
 	grid-area: cp;
 }
 
 .CPlane__dot {
 	position: absolute;
-	top: 2px;
+	top: 4px;
 	width: 3px;
 	height: 30px;
 	transform: translateX(-1px);
+}
+
+.CPlane__dot--current {
+	top: 2px;
+	height: 34px;
 }
 
 .ABPlane__label,
@@ -148,6 +164,12 @@ div {
 .Display__bar {
 	width: 150px;
 	height: 30px;
+	margin: 0 4px;
+}
+
+.Display--current {
+	width: 158px;
+	margin: 0;
 }
 
 .Display__contrast,

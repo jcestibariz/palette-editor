@@ -27,9 +27,16 @@ export default class ColorEditor extends Component {
 	handleAdd = () => this.props.onAdd(this.state.lch);
 
 	setValue(index, value) {
-		const lch = this.state.lch;
+		const lch = [...this.state.lch];
 		lch[index] = value;
 		this.setState({lch});
+	}
+
+	componentWillReceiveProps(nextProps) {
+		const color = nextProps.color;
+		if (color !== this.props.color) {
+			this.setState({lch: color});
+		}
 	}
 
 	render() {

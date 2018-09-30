@@ -6,7 +6,9 @@ const getABStyle = color => ({left: 160 + color.a, top: 160 - color.b, backgroun
 const getLStyle = color => ({top: 260 - 2 * color.l, backgroundColor: color.hex});
 const getCStyle = color => ({left: 25 + 2 * color.c, backgroundColor: color.hex});
 
-const LabDisplay = ({palette}) => {
+const getDotClass = (className, index, current) => className + (index === current ? ' ' + className + '--current' : '');
+
+const LabDisplay = ({palette, current, onSelect}) => {
 	const colors = palette.map(e => {
 		const [l, c, h] = e;
 		const hr = isNaN(h) ? 0 : (h * Math.PI) / 180;
@@ -22,22 +24,22 @@ const LabDisplay = ({palette}) => {
 				<div className="ABPlane__x" />
 				<div className="ABPlane__y" />
 				<div className="ABPlane__label">a*b*</div>
-				{colors.map(c => (
-					<div className="ABPlane__dot" style={getABStyle(c)} />
+				{colors.map((c, i) => (
+					<div className={getDotClass('ABPlane__dot', i, current)} style={getABStyle(c)} onClick={() => onSelect(i)} />
 				))}
 			</div>
 
 			<div className="LPlane">
 				<div className="LPlane__label">L*</div>
-				{colors.map(c => (
-					<div className="LPlane__dot" style={getLStyle(c)} />
+				{colors.map((c, i) => (
+					<div className={getDotClass('LPlane__dot', i, current)} style={getLStyle(c)} onClick={() => onSelect(i)} />
 				))}
 			</div>
 
 			<div className="CPlane">
 				<div className="CPlane__label">c*</div>
-				{colors.map(c => (
-					<div className="CPlane__dot" style={getCStyle(c)} />
+				{colors.map((c, i) => (
+					<div className={getDotClass('CPlane__dot', i, current)} style={getCStyle(c)} onClick={() => onSelect(i)} />
 				))}
 			</div>
 		</div>
@@ -46,6 +48,8 @@ const LabDisplay = ({palette}) => {
 
 LabDisplay.propTypes = {
 	palette: PropTypes.array,
+	current: PropTypes.number,
+	onSelect: PropTypes.func,
 };
 
 export default LabDisplay;

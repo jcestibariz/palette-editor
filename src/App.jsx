@@ -22,6 +22,8 @@ class App extends Component {
 		originalPalette: null,
 	};
 
+	setCurrent = current => this.setState({current});
+
 	replaceColor = color => {
 		const {palette, current} = this.state;
 		palette[current] = color;
@@ -84,8 +86,8 @@ class App extends Component {
 		const {palette, bg, current, originalPalette} = this.state;
 		return (
 			<div className="App">
-				<LabDisplay palette={palette} />
-				<Display palette={palette} bg={bg} />
+				<LabDisplay palette={palette} current={current} onSelect={this.setCurrent} />
+				<Display palette={palette} bg={bg} current={current} onSelect={this.setCurrent} />
 				<ColorEditor
 					className="App__editor"
 					color={palette[current]}
