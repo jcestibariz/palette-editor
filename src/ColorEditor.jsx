@@ -10,25 +10,21 @@ const formatNumber = intlFormatter(new Intl.NumberFormat(undefined, {maximumFrac
 export default class ColorEditor extends Component {
 	static propTypes = {
 		className: PropTypes.string,
-		color: PropTypes.object,
+		color: PropTypes.array,
 		onReplace: PropTypes.func,
 		onAdd: PropTypes.func,
 	};
 
 	state = {
-		lch: this.props.color.lch(),
+		lch: this.props.color,
 	};
 
 	setL = v => this.setValue(0, v);
 	setC = v => this.setValue(1, v);
 	setH = v => this.setValue(2, v);
 
-	handleReplace = () => this.props.onReplace(this.getColor());
-	handleAdd = () => this.props.onAdd(this.getColor());
-
-	getColor() {
-		return chroma.lch(this.state.lch);
-	}
+	handleReplace = () => this.props.onReplace(this.state.lch);
+	handleAdd = () => this.props.onAdd(this.state.lch);
 
 	setValue(index, value) {
 		const lch = this.state.lch;
@@ -47,7 +43,7 @@ export default class ColorEditor extends Component {
 
 		return (
 			<div className={'ColorEditor ' + className}>
-				<div className="ColorEditor__patch" style={{backgroundColor: color.hex()}} />
+				<div className="ColorEditor__patch" style={{backgroundColor: chroma.lch(color).hex()}} />
 				<div className="ColorEditor__patch" style={{backgroundColor: hex}} />
 				<div className="ColorEditor__controls">
 					<div className="ColorEditor__control">

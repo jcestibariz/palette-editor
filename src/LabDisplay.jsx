@@ -1,5 +1,6 @@
 import preact from 'preact';
 import PropTypes from 'prop-types';
+import chroma from 'chroma-js';
 
 const getABStyle = color => ({left: 160 + color.a, top: 160 - color.b, backgroundColor: color.hex});
 const getLStyle = color => ({top: 260 - 2 * color.l, backgroundColor: color.hex});
@@ -7,9 +8,11 @@ const getCStyle = color => ({left: 25 + 2 * color.c, backgroundColor: color.hex}
 
 const LabDisplay = ({palette}) => {
 	const colors = palette.map(e => {
-		const [l, a, b] = e.lab();
-		const c = Math.sqrt(a * a + b * b);
-		const hex = e.hex();
+		const [l, c, h] = e;
+		const hr = isNaN(h) ? 0 : (h * Math.PI) / 180;
+		const a = c * Math.cos(hr);
+		const b = c * Math.sin(hr);
+		const hex = chroma.lch(e).hex();
 		return {l, a, b, c, hex};
 	});
 
