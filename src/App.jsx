@@ -16,7 +16,7 @@ const update = (a, i, v) => {
 
 class App extends Component {
 	state = {
-		palette: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#808080'].map(toLCH),
+		palette: ['#8dd3c7','#f7ea7b','#bebada','#fb8072','#80b1d3','#fdb462','#b6dd71','#fccde5'].map(toLCH),
 		bg: chroma('#ffffff'),
 		current: 0,
 		originalPalette: null,
@@ -40,7 +40,7 @@ class App extends Component {
 		try {
 			const palette = e.target.value
 				.replace(/['"]/g, '')
-				.split(',')
+				.split(/[,\n]/)
 				.map(toLCH);
 			this.setState({palette, current: 0});
 		} catch (e) {
