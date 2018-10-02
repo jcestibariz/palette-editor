@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import chroma from 'chroma-js';
 
 import Slider from './Slider';
-
-const intlFormatter = fmt => x => fmt.format(x);
-const formatNumber = intlFormatter(new Intl.NumberFormat(undefined, {maximumFractionDigits: 1}));
+import formatNumber from './formatNumber';
 
 export default class ColorEditor extends Component {
 	static propTypes = {
@@ -45,7 +43,7 @@ export default class ColorEditor extends Component {
 		const newColor = chroma.lch(lch);
 		const hex = newColor.hex();
 		const [l, c, h] = lch;
-		const hr = (h * Math.PI) / 180;
+		const hr = isNaN(h) ? 0 : (h * Math.PI) / 180;
 		const lab = [l, c * Math.cos(hr), c * Math.sin(hr)];
 
 		return (

@@ -41,6 +41,7 @@ class App extends Component {
 			const palette = e.target.value
 				.replace(/['"]/g, '')
 				.split(/[,\n]/)
+				.filter(v => v)
 				.map(toLCH);
 			this.setState({palette, current: 0});
 		} catch (e) {
