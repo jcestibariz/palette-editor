@@ -1,12 +1,8 @@
 module.exports = {
-	entry: './src/index.jsx',
-	resolve: {
-		extensions: ['.js', '.jsx'],
-	},
 	module: {
 		rules: [
 			{
-				test: /\.jsx?$/,
+				test: /\.js$/,
 				exclude: /node_modules/,
 				use: [
 					{
