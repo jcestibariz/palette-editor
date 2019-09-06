@@ -70,8 +70,8 @@ div {
 
 .ABPlane {
 	position: relative;
-	width: 321px;
-	height: 321px;
+	width: 641px;
+	height: 641px;
 	border: 1px solid var(--black-a05);
 	grid-area: ab;
 }
@@ -80,7 +80,7 @@ div {
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 160px;
+	top: 320px;
 	height: 1px;
 	background-color: var(--black-a20);
 }
@@ -89,7 +89,7 @@ div {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: 160px;
+	left: 320px;
 	width: 1px;
 	background-color: var(--black-a20);
 }

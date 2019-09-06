@@ -2,9 +2,9 @@ import preact from 'preact';
 import PropTypes from 'prop-types';
 import chroma from 'chroma-js';
 
-const getABStyle = color => ({left: 160 + color.a, top: 160 - color.b, backgroundColor: color.hex});
-const getLStyle = color => ({top: 260 - 2 * color.l, backgroundColor: color.hex});
-const getCStyle = color => ({left: 25 + 2 * color.c, backgroundColor: color.hex});
+const getABStyle = color => ({left: 320 + 2 * color.a, top: 320 - 2 * color.b, backgroundColor: color.hex});
+const getLStyle = color => ({top: 630 - 6.2 * color.l, backgroundColor: color.hex});
+const getCStyle = color => ({left: 10 + 4.1333 * color.c, backgroundColor: color.hex});
 
 const getDotClass = (className, index, current) => className + (index === current ? ' ' + className + '--current' : '');
 
