@@ -14,11 +14,10 @@ module.exports = {
 						options: {
 							cacheDirectory: true,
 							presets: [
-								['env', {modules: false, useBuiltIns: true, targets: {browsers: 'chrome >= 68'}}],
-								'react',
-								'stage-2',
+								['@babel/env', {modules: false, targets: {browsers: 'chrome >= 68'}}],
+								['@babel/react', {pragma: 'preact.h'}],
 							],
-							plugins: [['transform-react-jsx', {pragma: 'preact.h'}]],
+							plugins: ['@babel/proposal-class-properties'],
 						},
 					},
 				],
