@@ -1,5 +1,6 @@
 :root {
 	--light-blue-800: #0277bd;
+	--orange-900: #e65100;
 	--gray-200: #eeeeee;
 	--gray-500: #9e9e9e;
 
@@ -7,14 +8,16 @@
 	--black-a20: rgba(0, 0, 0, 0.2);
 	--black-a60: rgba(0, 0, 0, 0.6);
 	--black-a87: rgba(0, 0, 0, 0.87);
+
+	color: var(--black-a87);
 }
 
-body,
+:root,
 input,
-textarea {
+textarea,
+button {
 	font-family: Noto, sans-serif;
-	font-size: 16px;
-	color: var(--black-a87);
+	font-size: 14px;
 }
 
 body {
@@ -23,6 +26,16 @@ body {
 
 div {
 	display: flex;
+}
+
+label {
+	font-size: 12px;
+	color: var(--black-a60);
+}
+
+input[aria-invalid='true'] {
+	border-color: var(--orange-900);
+	outline-color: var(--orange-900);
 }
 
 .App {
@@ -55,6 +68,13 @@ div {
 
 .App__editPalette {
 	grid-area: ep;
+}
+
+.App__buttons {
+	grid-area: ep;
+}
+.App__buttons > :not(:first-child) {
+	margin-left: 8px;
 }
 
 .LabDisplay {
@@ -170,12 +190,12 @@ div {
 .Display__bar {
 	width: 150px;
 	height: 30px;
-	margin: 0 4px;
+	margin: 0 4px 4px;
 }
 
 .Display--current {
 	width: 158px;
-	margin: 0;
+	margin: 0 0 4px;
 }
 
 .Display__contrast {
@@ -316,4 +336,74 @@ div {
 
 .PaletteEditor__buttons > :not(:last-child) {
 	margin-bottom: 4px;
+}
+
+.PaletteGenerator {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(2px) saturate(25%);
+}
+
+.PaletteGenerator__dialog {
+	border-radius: 8px;
+	background-color: var(--gray-200);
+	padding: 24px;
+}
+
+.PaletteGenerator__title {
+	font-size: 1.2rem;
+}
+
+.PaletteGenerator__body {
+	flex-direction: column;
+	margin: 24px 0;
+}
+
+.PaletteGenerator__main {
+	margin-bottom: 12px;
+}
+
+.PaletteGenerator__patch {
+	width: 66px;
+	height: 66px;
+	margin-right: 12px;
+}
+
+.PaletteGenerator__inputs {
+	flex-direction: column;
+	width: 120px;
+	margin-left: 24px;
+	white-space: nowrap;
+}
+
+.PaletteGenerator__field {
+	flex-direction: column;
+}
+.PaletteGenerator__field:not(:first-child) {
+	margin-top: 4px;
+}
+
+.PaletteGenerator__error {
+	color: var(--orange-900);
+}
+
+.PaletteGenerator__color {
+	width: 20px;
+	height: 20px;
+}
+.PaletteGenerator__color:not(:first-child) {
+	margin-left: 2px;
+}
+
+.PaletteGenerator__buttons {
+	justify-content: flex-end;
+}
+.PaletteGenerator__buttons > :not(:first-child) {
+	margin-left: 8px;
 }

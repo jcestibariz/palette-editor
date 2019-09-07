@@ -4,6 +4,7 @@ import chroma from 'chroma-js';
 import LabDisplay from './LabDisplay';
 import Display from './Display';
 import ColorEditor from './ColorEditor';
+import PaletteGenerator from './PaletteGenerator';
 import PaletteEditor from './PaletteEditor';
 
 const toLCH = c => chroma(c.trim()).lch();
@@ -16,9 +17,12 @@ const update = (a, i, v) => {
 
 class App extends Component {
 	state = {
-		palette: ['#8dd3c7','#f7ea7b','#bebada','#fb8072','#80b1d3','#fdb462','#b6dd71','#fccde5'].map(toLCH),
+		palette: ['#8dd3c7', '#f7ea7b', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b6dd71', '#fccde5'].map(toLCH),
 		bg: chroma('#ffffff'),
+		bgText: '#ffffff',
+		bgError: false,
 		current: 0,
+		showGenerate: false,
 		originalPalette: null,
 	};
 
@@ -50,13 +54,19 @@ class App extends Component {
 	};
 
 	updateBG = e => {
+		const bgText = e.target.value;
 		try {
-			const bg = chroma(e.target.value);
-			this.setState({bg});
+			const bg = chroma(bgText);
+			this.setState({bg, bgText, bgError: false});
 		} catch (e) {
-			alert(e);
+			this.setState({bgText, bgError: true});
 		}
 	};
+
+	startGenerate = () => this.setState({showGenerate: true});
+	cancelGenerate = () => this.setState({showGenerate: false});
+
+	savePalette = palette => this.setState({palette, current: 0, showGenerate: false});
 
 	startChange = () => this.setState({originalPalette: this.state.palette});
 
@@ -84,7 +94,7 @@ class App extends Component {
 	};
 
 	render() {
-		const {palette, bg, current, originalPalette} = this.state;
+		const {palette, bg, bgText, bgError, current, showGenerate, originalPalette} = this.state;
 		return (
 			<div className="App">
 				<LabDisplay palette={palette} current={current} onSelect={this.setCurrent} />
@@ -97,12 +107,17 @@ class App extends Component {
 				/>
 
 				<div className="App__palette">
-					<div>Palette</div>
-					<textarea value={palette.map(c => "'" + chroma.lch(c).hex() + "'").join(',')} onChange={this.updatePalette} />
+					<label htmlFor="mainPalette">Palette</label>
+					<textarea
+						id="mainPalette"
+						value={palette.map(c => chroma.lch(c).hex()).join(',')}
+						spellCheck="false"
+						onChange={this.updatePalette}
+					/>
 				</div>
 				<div className="App__bg">
-					<div>Background</div>
-					<input value={bg} onChange={this.updateBG} />
+					<label htmlFor="mainBG">Background</label>
+					<input id="mainBG" value={bgText} spellCheck="false" aria-invalid={bgError} onInput={this.updateBG} />
 				</div>
 
 				{originalPalette ? (
@@ -115,9 +130,13 @@ class App extends Component {
 						onCancel={this.cancelChange}
 					/>
 				) : (
-					<div className="App__editPalette">
+					<div className="App__buttons">
+						<button onClick={this.startGenerate}>Generate</button>
 						<button onClick={this.startChange}>Alter Palette</button>
 					</div>
+				)}
+				{showGenerate && (
+					<PaletteGenerator color={palette[current]} onSave={this.savePalette} onCancel={this.cancelGenerate} />
 				)}
 			</div>
 		);
