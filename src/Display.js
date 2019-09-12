@@ -1,29 +1,36 @@
 import preact from 'preact';
 import PropTypes from 'prop-types';
-import chroma, {contrast} from 'chroma-js';
 
 import formatNumber from './formatNumber';
+import {lch2luv, luv2xyz, rgb2hex, xyz2rgb} from './conversions';
 
-const getColor = bg => (bg.luminance() < 0.5 ? '#ffffff' : '#000000');
+const lch2xyz = lch => luv2xyz(lch2luv(lch));
+const xyz2hex = xyz => rgb2hex(xyz2rgb(xyz));
+
+const getColor = l => (l < 50 ? '#ffffff' : '#000000');
+
+const contrast = (l1, l2) => (l1 > l2 ? (l1 + 5) / (l2 + 5) : (l2 + 5) / (l1 + 5));
 
 const renderContrast = c => formatNumber(c) + ' ' + (c >= 7 ? 'AAA' : c >= 4.5 ? 'AA' : c >= 3 ? 'G' : 'F');
 
-const Display = ({palette, bg, current, onSelect}) => (
-	<div className="Display" style={{color: getColor(bg), backgroundColor: bg.hex()}}>
-		{palette
-			.map(c => chroma.lch(c))
-			.map((c, i) => (
+const Display = ({palette, bg, current, onSelect}) => {
+	const bgXYZ = lch2xyz(bg);
+	const bgL = bgXYZ[1];
+	return (
+		<div className="Display" style={{color: getColor(bgL), backgroundColor: xyz2hex(bgXYZ)}}>
+			{palette.map(lch2xyz).map((xyz, i) => (
 				<div className="Display__color">
 					<div
 						className={'Display__bar' + (i === current ? ' Display--current' : '')}
-						style={{backgroundColor: c.hex()}}
+						style={{backgroundColor: xyz2hex(xyz)}}
 						onClick={() => onSelect(i)}
 					/>
-					<div className="Display__contrast">{renderContrast(contrast(c, bg))}</div>
+					<div className="Display__contrast">{renderContrast(contrast(xyz[1], bgL))}</div>
 				</div>
 			))}
-	</div>
-);
+		</div>
+	);
+};
 
 Display.propTypes = {
 	palette: PropTypes.array,

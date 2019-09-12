@@ -77,7 +77,7 @@ input[aria-invalid='true'] {
 	margin-left: 8px;
 }
 
-.LabDisplay {
+.LuvDisplay {
 	grid-area: ld;
 	display: grid;
 	grid-gap: 10px;
@@ -88,33 +88,33 @@ input[aria-invalid='true'] {
 		'cp .';
 }
 
-.ABPlane {
+.UVPlane {
 	position: relative;
-	width: 641px;
-	height: 641px;
+	width: 541px;
+	height: 541px;
 	border: 1px solid var(--black-a05);
 	grid-area: ab;
 }
 
-.ABPlane__x {
+.UVPlane__x {
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 320px;
+	top: 270px;
 	height: 1px;
 	background-color: var(--black-a20);
 }
 
-.ABPlane__y {
+.UVPlane__y {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: 320px;
+	left: 270px;
 	width: 1px;
 	background-color: var(--black-a20);
 }
 
-.ABPlane__dot {
+.UVPlane__dot {
 	position: absolute;
 	width: 9px;
 	height: 9px;
@@ -122,7 +122,7 @@ input[aria-invalid='true'] {
 	transform: translate(-4px, -4px);
 }
 
-.ABPlane__dot--current {
+.UVPlane__dot--current {
 	width: 13px;
 	height: 13px;
 	transform: translate(-6px, -6px);
@@ -168,7 +168,7 @@ input[aria-invalid='true'] {
 	height: 34px;
 }
 
-.ABPlane__label,
+.UVPlane__label,
 .LPlane__label,
 .CPlane__label {
 	font-size: 12px;

@@ -1,9 +1,13 @@
 import preact, {Component} from 'preact';
 import PropTypes from 'prop-types';
-import chroma from 'chroma-js';
+import {hex2rgb, isClipped, lch2luv, luv2lch, luv2xyz, rgb2hex, rgb2xyz, xyz2luv, xyz2rgb} from './conversions';
 import intlFormatter from './intlFormatter';
 
 const fmt = intlFormatter(new Intl.NumberFormat(undefined, {maximumFractionDigits: 3}));
+
+const rgb2lch = rgb => luv2lch(xyz2luv(rgb2xyz(rgb)));
+const lch2rgb = lch => xyz2rgb(luv2xyz(lch2luv(lch)));
+const lch2hex = lch => rgb2hex(lch2rgb(lch));
 
 const generatePalette = (lch, factor, increment, count) => {
 	const palette = [];
@@ -31,10 +35,11 @@ export default class PaletteGenerator extends Component {
 
 	setHex = event => {
 		const target = event.target;
-		try {
-			this.setState({lch: chroma(target.value).lch()});
-		} catch (e) {
-			target.setCustomValidity(e.message);
+		const rgb = hex2rgb(target.value);
+		if (rgb) {
+			this.setState({lch: rgb2lch(rgb)});
+		} else {
+			target.setCustomValidity('Invalid color');
 		}
 	};
 
@@ -61,11 +66,18 @@ export default class PaletteGenerator extends Component {
 	render() {
 		const {onCancel} = this.props;
 		const {lch, increment, factor, count} = this.state;
-		const hex = chroma.lch(lch).hex();
+		const hex = lch2hex(lch);
 		const error = lch[1] - increment * count < 0 ? 'The final chroma would be negative' : null;
+		let warning = null;
 
-		if (!error) {
-			this.palette = generatePalette(lch, factor, increment, count);
+		if (error) {
+			this.palette = null;
+		} else {
+			const palette = generatePalette(lch, factor, increment, count);
+			if (palette.map(lch2rgb).some(isClipped)) {
+				warning = 'Some colors fall outside of sRGB';
+			}
+			this.palette = palette;
 		}
 
 		return (
@@ -124,17 +136,14 @@ export default class PaletteGenerator extends Component {
 								</div>
 							</div>
 						</div>
-						{error ? (
-							<div className="PaletteGenerator__error">{error}</div>
-						) : (
+						{this.palette && (
 							<div className="PaletteGenerator__sample">
-								{this.palette
-									.map(c => chroma.lch(c))
-									.map(c => (
-										<div className="PaletteGenerator__color" style={{backgroundColor: c.hex()}} />
-									))}
+								{this.palette.map(lch2hex).map(hex => (
+									<div className="PaletteGenerator__color" style={{backgroundColor: hex}} />
+								))}
 							</div>
 						)}
+						<div className="PaletteGenerator__error">{error || warning}</div>
 					</div>
 					<div className="PaletteGenerator__buttons">
 						<button disabled={!!error}>Save</button>

@@ -1,9 +1,12 @@
 import preact, {Component} from 'preact';
 import PropTypes from 'prop-types';
-import chroma from 'chroma-js';
 
 import Slider from './Slider';
 import formatNumber from './formatNumber';
+import {isClipped, lch2luv, luv2xyz, rgb2hex, xyz2rgb} from './conversions';
+
+const lch2rgb = lch => xyz2rgb(luv2xyz(lch2luv(lch)));
+const lch2hex = lch => rgb2hex(lch2rgb(lch));
 
 export default class ColorEditor extends Component {
 	static propTypes = {
@@ -40,15 +43,12 @@ export default class ColorEditor extends Component {
 	render() {
 		const {className, color} = this.props;
 		const lch = this.state.lch;
-		const newColor = chroma.lch(lch);
-		const hex = newColor.hex();
-		const [l, c, h] = lch;
-		const hr = isNaN(h) ? 0 : (h * Math.PI) / 180;
-		const lab = [l, c * Math.cos(hr), c * Math.sin(hr)];
+		const rgb = lch2rgb(lch);
+		const hex = rgb2hex(rgb);
 
 		return (
 			<div className={'ColorEditor ' + className}>
-				<div className="ColorEditor__patch" style={{backgroundColor: chroma.lch(color).hex()}} />
+				<div className="ColorEditor__patch" style={{backgroundColor: lch2hex(color)}} />
 				<div className="ColorEditor__patch" style={{backgroundColor: hex}} />
 				<div className="ColorEditor__controls">
 					<div className="ColorEditor__control">
@@ -57,7 +57,7 @@ export default class ColorEditor extends Component {
 					</div>
 					<div className="ColorEditor__control">
 						<div className="ColorEditor__controlLabel">C</div>
-						<Slider className="ColorEditor__slider" min={0} max={150} value={lch[1]} onValueChange={this.setC} />
+						<Slider className="ColorEditor__slider" min={0} max={180} value={lch[1]} onValueChange={this.setC} />
 					</div>
 					<div className="ColorEditor__control">
 						<div className="ColorEditor__controlLabel">H</div>
@@ -70,16 +70,12 @@ export default class ColorEditor extends Component {
 						<div className="ColorEditor__value">{lch.map(formatNumber).join(' ')}</div>
 					</div>
 					<div className="ColorEditor__valueRow">
-						<div className="ColorEditor__valueLabel">LAB</div>
-						<div className="ColorEditor__value">{lab.map(formatNumber).join(' ')}</div>
-					</div>
-					<div className="ColorEditor__valueRow">
 						<div className="ColorEditor__valueLabel">Hex</div>
 						<div className="ColorEditor__value">{hex}</div>
 					</div>
 					<div className="ColorEditor__valueRow">
 						<div className="ColorEditor__valueLabel">Clipped</div>
-						<div className="ColorEditor__value">{newColor.clipped() ? 'yes' : 'no'}</div>
+						<div className="ColorEditor__value">{isClipped(rgb) ? 'yes' : 'no'}</div>
 					</div>
 				</div>
 				<div className="ColorEditor__buttons">

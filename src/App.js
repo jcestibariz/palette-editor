@@ -1,13 +1,17 @@
 import preact, {Component} from 'preact';
-import chroma from 'chroma-js';
 
-import LabDisplay from './LabDisplay';
+import LuvDisplay from './LuvDisplay';
 import Display from './Display';
 import ColorEditor from './ColorEditor';
 import PaletteGenerator from './PaletteGenerator';
 import PaletteEditor from './PaletteEditor';
+import {hex2rgb, luv2lch, lch2luv, luv2xyz, rgb2hex, rgb2xyz, xyz2luv, xyz2rgb} from './conversions';
 
-const toLCH = c => chroma(c.trim()).lch();
+const {max} = Math;
+
+const rbg2lch = rgb => luv2lch(xyz2luv(rgb2xyz(rgb)));
+const hex2lch = hex => rbg2lch(hex2rgb(hex));
+const lch2hex = lch => rgb2hex(xyz2rgb(luv2xyz(lch2luv(lch))));
 
 const update = (a, i, v) => {
 	const a1 = [...a];
@@ -17,8 +21,8 @@ const update = (a, i, v) => {
 
 class App extends Component {
 	state = {
-		palette: ['#8dd3c7', '#f7ea7b', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b6dd71', '#fccde5'].map(toLCH),
-		bg: chroma('#ffffff'),
+		palette: ['#8dd3c7', '#f7ea7b', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b6dd71', '#fccde5'].map(hex2lch),
+		bg: hex2lch('#ffffff'),
 		bgText: '#ffffff',
 		bgError: false,
 		current: 0,
@@ -41,24 +45,20 @@ class App extends Component {
 	};
 
 	updatePalette = e => {
-		try {
-			const palette = e.target.value
-				.replace(/['"]/g, '')
-				.split(/[,\n]/)
-				.filter(v => v)
-				.map(toLCH);
-			this.setState({palette, current: 0});
-		} catch (e) {
-			alert(e);
+		const rgbs = e.target.value.split(/[,\n]/).map(hex2rgb);
+		if (rgbs.some(c => !c)) {
+			alert('Invalid color found');
+		} else {
+			this.setState({palette: rgbs.map(rbg2lch), current: 0});
 		}
 	};
 
 	updateBG = e => {
 		const bgText = e.target.value;
-		try {
-			const bg = chroma(bgText);
-			this.setState({bg, bgText, bgError: false});
-		} catch (e) {
+		const rgb = hex2rgb(bgText);
+		if (rgb) {
+			this.setState({bg: rbg2lch(rgb), bgText, bgError: false});
+		} else {
 			this.setState({bgText, bgError: true});
 		}
 	};
@@ -82,7 +82,7 @@ class App extends Component {
 	updateChroma = c => {
 		const {palette, originalPalette} = this.state;
 		this.setState({
-			palette: palette.map((e, i) => update(e, 1, isNaN(e[2]) ? 0 : Math.max(originalPalette[i][1] + c, 0))),
+			palette: palette.map((e, i) => update(e, 1, isNaN(e[2]) ? 0 : max(originalPalette[i][1] + c, 0))),
 		});
 	};
 
@@ -97,7 +97,7 @@ class App extends Component {
 		const {palette, bg, bgText, bgError, current, showGenerate, originalPalette} = this.state;
 		return (
 			<div className="App">
-				<LabDisplay palette={palette} current={current} onSelect={this.setCurrent} />
+				<LuvDisplay palette={palette} current={current} onSelect={this.setCurrent} />
 				<Display palette={palette} bg={bg} current={current} onSelect={this.setCurrent} />
 				<ColorEditor
 					className="App__editor"
@@ -110,7 +110,7 @@ class App extends Component {
 					<label htmlFor="mainPalette">Palette</label>
 					<textarea
 						id="mainPalette"
-						value={palette.map(c => chroma.lch(c).hex()).join(',')}
+						value={palette.map(lch2hex).join(',')}
 						spellCheck="false"
 						onChange={this.updatePalette}
 					/>
