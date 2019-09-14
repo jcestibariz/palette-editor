@@ -4,7 +4,7 @@
   "description": "Edit palettes in L*a*b* space",
   "scripts": {
     "start": "webpack-dev-server --open --port 8090 --mode development --content-base public",
-    "build": "webpack -p",
+    "build": "webpack -p && cp public/* dist/",
     "test": "jest"
   },
   "license": "ISC",

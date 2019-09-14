@@ -1,4 +1,5 @@
 .idea/workspace.xml
+.firebase/
 coverage/
 dist/
 node_modules/
