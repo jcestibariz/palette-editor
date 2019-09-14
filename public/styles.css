@@ -119,13 +119,11 @@ input[aria-invalid='true'] {
 	width: 9px;
 	height: 9px;
 	border-radius: 50%;
-	transform: translate(-4px, -4px);
 }
 
 .UVPlane__dot--current {
 	width: 13px;
 	height: 13px;
-	transform: translate(-6px, -6px);
 }
 
 .LPlane {
@@ -140,7 +138,6 @@ input[aria-invalid='true'] {
 	left: 4px;
 	width: 30px;
 	height: 3px;
-	transform: translateY(-1px);
 }
 
 .LPlane__dot--current {
@@ -160,7 +157,6 @@ input[aria-invalid='true'] {
 	top: 4px;
 	width: 3px;
 	height: 30px;
-	transform: translateX(-1px);
 }
 
 .CPlane__dot--current {
@@ -217,9 +213,11 @@ input[aria-invalid='true'] {
 }
 
 .Slider__bar {
+	position: absolute;
 	height: 7px;
 	border-radius: 3px;
 	background-color: var(--gray-500);
+	pointer-events: none;
 	transition: background-color 0.2s ease-in-out;
 }
 
@@ -236,9 +234,8 @@ input[aria-invalid='true'] {
 	border-radius: 100%;
 	background-color: var(--light-blue-800);
 	cursor: ew-resize;
-	transform: translateX(-6px);
 	opacity: 0;
-	will-change: left, opacity;
+	will-change: transform, opacity;
 	transition: opacity 0.2s ease-in-out;
 }
 

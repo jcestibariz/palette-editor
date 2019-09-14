@@ -4,9 +4,12 @@ import {lch2luv, luv2xyz, rgb2hex, xyz2rgb} from './conversions';
 
 const luv2hex = luv => rgb2hex(xyz2rgb(luv2xyz(luv)));
 
-const getUVStyle = color => ({left: 270 + 1.5 * color.a, top: 270 - 1.5 * color.b, backgroundColor: color.hex});
-const getLStyle = color => ({top: 530 - 5.2 * color.l, backgroundColor: color.hex});
-const getCStyle = color => ({left: 10 + 2.8889 * color.c, backgroundColor: color.hex});
+const getUVStyle = (color, offset) => ({
+	transform: `translate(${270 + 1.5 * color.a - offset}px, ${270 - 1.5 * color.b - offset}px)`,
+	backgroundColor: color.hex,
+});
+const getLStyle = color => ({transform: `translateY(${529 - 5.2 * color.l}px)`, backgroundColor: color.hex});
+const getCStyle = color => ({transform: `translateX(${9 + 2.8889 * color.c}px)`, backgroundColor: color.hex});
 
 const getDotClass = (className, index, current) => className + (index === current ? ' ' + className + '--current' : '');
 
@@ -25,7 +28,11 @@ const LuvDisplay = ({palette, current, onSelect}) => {
 				<div className="UVPlane__y" />
 				<div className="UVPlane__label">u*v*</div>
 				{colors.map((c, i) => (
-					<div className={getDotClass('UVPlane__dot', i, current)} style={getUVStyle(c)} onClick={() => onSelect(i)} />
+					<div
+						className={getDotClass('UVPlane__dot', i, current)}
+						style={getUVStyle(c, i === current ? 6 : 4)}
+						onClick={() => onSelect(i)}
+					/>
 				))}
 			</div>
 

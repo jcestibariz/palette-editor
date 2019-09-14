@@ -39,7 +39,7 @@ class Slider extends Component {
 				this.scheduled = true;
 				requestAnimationFrame(() => {
 					this.scheduled = false;
-					this.trackElement.firstChild.style.left = this.current + 'px';
+					this.trackElement.firstChild.style.transform = `translateX(${this.current - 6}px)`;
 					this.props.onValueChange(this.props.min + this.current / this.factor);
 				});
 			}
@@ -103,7 +103,7 @@ class Slider extends Component {
 		element.lastChild.style.width = p + 'px';
 		if (!this.active) {
 			this.current = p;
-			element.firstChild.style.left = p + 'px';
+			element.firstChild.style.transform = `translateX(${p - 6}px)`;
 		}
 	}
 
