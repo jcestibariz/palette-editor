@@ -19,29 +19,74 @@ const update = (a, i, v) => {
 	return a1;
 };
 
-class App extends Component {
-	state = {
-		palette: ['#8dd3c7', '#f7ea7b', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b6dd71', '#fccde5'].map(hex2lch),
-		bg: hex2lch('#ffffff'),
-		bgText: '#ffffff',
+const buildUrl = (bg, palette) =>
+	'?b=' + lch2hex(bg).slice(1) + '&p=' + palette.map(c => lch2hex(c).slice(1)).join(',');
+
+const parseUrl = () => {
+	const params = new URLSearchParams(location.search);
+
+	let palette;
+	if (params.has('p')) {
+		const p = params.get('p');
+		const rgbs = p.split(/[,]/).map(hex2rgb);
+		if (rgbs.some(c => !c)) {
+			alert('Invalid color found');
+		} else {
+			palette = rgbs.map(rbg2lch);
+		}
+	}
+	if (!palette) {
+		palette = ['#8dd3c7', '#f7ea7b', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b6dd71', '#fccde5'].map(hex2lch);
+	}
+
+	let bg, bgText;
+	if (params.has('b')) {
+		const b = params.get('b');
+		const rgb = hex2rgb(b);
+		if (rgb) {
+			bg = rbg2lch(rgb);
+			bgText = '#' + b;
+		}
+	}
+	if (!bg) {
+		bg = hex2lch('#ffffff');
+		bgText = '#ffffff';
+	}
+
+	return {palette, bg, bgText};
+};
+
+const buildInitialState = () => {
+	const {palette, bg, bgText} = parseUrl();
+
+	return {
+		palette,
+		bg,
+		bgText,
 		bgError: false,
 		current: 0,
 		showGenerate: false,
 		originalPalette: null,
 	};
+};
+
+class App extends Component {
+	state = buildInitialState();
 
 	setCurrent = current => this.setState({current});
 
 	replaceColor = color => {
-		const {palette, current} = this.state;
+		const {bg, palette, current} = this.state;
 		palette[current] = color;
 		this.setState({palette});
+		history.pushState(null, '', buildUrl(bg, palette));
 	};
 
 	addColor = color => {
-		const {palette} = this.state;
+		const {bg, palette} = this.state;
 		palette.push(color);
 		this.setState({palette, current: palette.length - 1});
+		history.pushState(null, '', buildUrl(bg, palette));
 	};
 
 	updatePalette = e => {
@@ -49,7 +94,9 @@ class App extends Component {
 		if (rgbs.some(c => !c)) {
 			alert('Invalid color found');
 		} else {
-			this.setState({palette: rgbs.map(rbg2lch), current: 0});
+			const palette = rgbs.map(rbg2lch);
+			this.setState({palette, current: 0});
+			history.pushState(null, '', buildUrl(this.state.bg, palette));
 		}
 	};
 
@@ -57,7 +104,9 @@ class App extends Component {
 		const bgText = e.target.value;
 		const rgb = hex2rgb(bgText);
 		if (rgb) {
-			this.setState({bg: rbg2lch(rgb), bgText, bgError: false});
+			const bg = rbg2lch(rgb);
+			this.setState({bg, bgText, bgError: false});
+			history.pushState(null, '', buildUrl(bg, this.state.palette));
 		} else {
 			this.setState({bgText, bgError: true});
 		}
@@ -66,11 +115,18 @@ class App extends Component {
 	startGenerate = () => this.setState({showGenerate: true});
 	cancelGenerate = () => this.setState({showGenerate: false});
 
-	savePalette = palette => this.setState({palette, current: 0, showGenerate: false});
+	savePalette = palette => {
+		this.setState({palette, current: 0, showGenerate: false});
+		history.pushState(null, '', buildUrl(this.state.bg, palette));
+	};
 
 	startChange = () => this.setState({originalPalette: this.state.palette});
 
-	applyChange = () => this.setState({originalPalette: null});
+	applyChange = () => {
+		const {bg, palette} = this.state;
+		this.setState({originalPalette: null});
+		history.pushState(null, '', buildUrl(bg, palette));
+	};
 
 	cancelChange = () => this.setState({palette: this.state.originalPalette, originalPalette: null});
 
@@ -92,6 +148,12 @@ class App extends Component {
 			palette: palette.map((e, i) => update(e, 2, isNaN(e[2]) ? NaN : originalPalette[i][2] + (h % 360))),
 		});
 	};
+
+	componentDidMount() {
+		const {palette, bg} = this.state;
+		history.replaceState(null, '', buildUrl(bg, palette));
+		window.onpopstate = () => this.setState(parseUrl());
+	}
 
 	render() {
 		const {palette, bg, bgText, bgError, current, showGenerate, originalPalette} = this.state;
