@@ -244,7 +244,8 @@ input[aria-invalid='true'] {
 	opacity: 1;
 }
 
-.Slider__thumb {
+.Slider__dot::after {
+	content: '';
 	width: 11px;
 	height: 11px;
 	border-radius: 100%;
@@ -254,8 +255,7 @@ input[aria-invalid='true'] {
 	transition: transform 0.1s ease-in-out;
 }
 
-:not(.Slider--disabled):focus > * > .Slider__thumb,
-.Slider__thumb:active {
+:not(.Slider--disabled):focus > .Slider__dot::after {
 	transform: scale(2.5);
 }
 

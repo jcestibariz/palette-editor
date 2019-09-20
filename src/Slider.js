@@ -117,9 +117,7 @@ class Slider extends Component {
 				ref={this.setTrackElement}
 				onClick={this.handleTrackClick}
 				onKeyDown={this.handleKeyDown}>
-				<div className="Slider__dot" onMouseDown={this.handleMouseDown}>
-					<div className="Slider__thumb" />
-				</div>
+				<div className="Slider__dot" onMouseDown={this.handleMouseDown} />
 				<div className="Slider__bar" />
 			</div>
 		);
