@@ -53,7 +53,7 @@ const parseUrl = () => {
 		bgText = '#ffffff';
 	}
 
-	return {palette, bg, bgText};
+	return {palette, bg, bgText, current: 0};
 };
 
 const buildInitialState = () => {
