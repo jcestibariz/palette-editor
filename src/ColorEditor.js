@@ -1,12 +1,12 @@
-import preact, {Component} from 'preact';
+import {Component} from 'preact';
 import PropTypes from 'prop-types';
 
 import Slider from './Slider';
 import formatNumber from './formatNumber';
 import {isClipped, lch2luv, luv2xyz, rgb2hex, xyz2rgb} from './conversions';
 
-const lch2rgb = lch => xyz2rgb(luv2xyz(lch2luv(lch)));
-const lch2hex = lch => rgb2hex(lch2rgb(lch));
+const lch2rgb = (lch) => xyz2rgb(luv2xyz(lch2luv(lch)));
+const lch2hex = (lch) => rgb2hex(lch2rgb(lch));
 
 export default class ColorEditor extends Component {
 	static propTypes = {
@@ -20,9 +20,9 @@ export default class ColorEditor extends Component {
 		lch: this.props.color,
 	};
 
-	setL = v => this.setValue(0, v);
-	setC = v => this.setValue(1, v);
-	setH = v => this.setValue(2, v);
+	setL = (v) => this.setValue(0, v);
+	setC = (v) => this.setValue(1, v);
+	setH = (v) => this.setValue(2, v);
 
 	handleReplace = () => this.props.onReplace(this.state.lch);
 	handleAdd = () => this.props.onAdd(this.state.lch);

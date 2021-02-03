@@ -1,13 +1,13 @@
-import preact, {Component} from 'preact';
+import {Component} from 'preact';
 import PropTypes from 'prop-types';
 import {hex2rgb, isClipped, lch2luv, luv2lch, luv2xyz, rgb2hex, rgb2xyz, xyz2luv, xyz2rgb} from './conversions';
 import intlFormatter from './intlFormatter';
 
 const fmt = intlFormatter(new Intl.NumberFormat(undefined, {maximumFractionDigits: 3}));
 
-const rgb2lch = rgb => luv2lch(xyz2luv(rgb2xyz(rgb)));
-const lch2rgb = lch => xyz2rgb(luv2xyz(lch2luv(lch)));
-const lch2hex = lch => rgb2hex(lch2rgb(lch));
+const rgb2lch = (rgb) => luv2lch(xyz2luv(rgb2xyz(rgb)));
+const lch2rgb = (lch) => xyz2rgb(luv2xyz(lch2luv(lch)));
+const lch2hex = (lch) => rgb2hex(lch2rgb(lch));
 
 const generatePalette = (lch, factor, increment, count) => {
 	const palette = [];
@@ -33,7 +33,7 @@ export default class PaletteGenerator extends Component {
 		count: 5,
 	};
 
-	setHex = event => {
+	setHex = (event) => {
 		const target = event.target;
 		const rgb = hex2rgb(target.value);
 		if (rgb) {
@@ -43,15 +43,15 @@ export default class PaletteGenerator extends Component {
 		}
 	};
 
-	setL = event => this.setValue(0, +event.target.value);
-	setC = event => this.setValue(1, +event.target.value);
-	setH = event => this.setValue(2, +event.target.value);
+	setL = (event) => this.setValue(0, +event.target.value);
+	setC = (event) => this.setValue(1, +event.target.value);
+	setH = (event) => this.setValue(2, +event.target.value);
 
-	setFactor = event => this.setState({factor: +event.target.value});
-	setIncrement = event => this.setState({increment: +event.target.value});
-	setCount = event => this.setState({count: +event.target.value});
+	setFactor = (event) => this.setState({factor: +event.target.value});
+	setIncrement = (event) => this.setState({increment: +event.target.value});
+	setCount = (event) => this.setState({count: +event.target.value});
 
-	handleSave = event => {
+	handleSave = (event) => {
 		const {onSave} = this.props;
 		event.preventDefault();
 		onSave(this.palette);
@@ -138,7 +138,7 @@ export default class PaletteGenerator extends Component {
 						</div>
 						{this.palette && (
 							<div className="PaletteGenerator__sample">
-								{this.palette.map(lch2hex).map(hex => (
+								{this.palette.map(lch2hex).map((hex) => (
 									<div className="PaletteGenerator__color" style={{backgroundColor: hex}} />
 								))}
 							</div>

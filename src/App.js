@@ -1,4 +1,4 @@
-import preact, {Component} from 'preact';
+import {Component} from 'preact';
 
 import LuvDisplay from './LuvDisplay';
 import Display from './Display';
@@ -9,9 +9,9 @@ import {hex2rgb, luv2lch, lch2luv, luv2xyz, rgb2hex, rgb2xyz, xyz2luv, xyz2rgb} 
 
 const {max} = Math;
 
-const rbg2lch = rgb => luv2lch(xyz2luv(rgb2xyz(rgb)));
-const hex2lch = hex => rbg2lch(hex2rgb(hex));
-const lch2hex = lch => rgb2hex(xyz2rgb(luv2xyz(lch2luv(lch))));
+const rbg2lch = (rgb) => luv2lch(xyz2luv(rgb2xyz(rgb)));
+const hex2lch = (hex) => rbg2lch(hex2rgb(hex));
+const lch2hex = (lch) => rgb2hex(xyz2rgb(luv2xyz(lch2luv(lch))));
 
 const update = (a, i, v) => {
 	const a1 = [...a];
@@ -20,7 +20,7 @@ const update = (a, i, v) => {
 };
 
 const buildUrl = (bg, palette) =>
-	'?b=' + lch2hex(bg).slice(1) + '&p=' + palette.map(c => lch2hex(c).slice(1)).join(',');
+	'?b=' + lch2hex(bg).slice(1) + '&p=' + palette.map((c) => lch2hex(c).slice(1)).join(',');
 
 const parseUrl = () => {
 	const params = new URLSearchParams(location.search);
@@ -29,7 +29,7 @@ const parseUrl = () => {
 	if (params.has('p')) {
 		const p = params.get('p');
 		const rgbs = p.split(/[,]/).map(hex2rgb);
-		if (rgbs.some(c => !c)) {
+		if (rgbs.some((c) => !c)) {
 			alert('Invalid color found');
 		} else {
 			palette = rgbs.map(rbg2lch);
@@ -73,25 +73,25 @@ const buildInitialState = () => {
 class App extends Component {
 	state = buildInitialState();
 
-	setCurrent = current => this.setState({current});
+	setCurrent = (current) => this.setState({current});
 
-	replaceColor = color => {
+	replaceColor = (color) => {
 		const {bg, palette, current} = this.state;
 		palette[current] = color;
 		this.setState({palette});
 		history.pushState(null, '', buildUrl(bg, palette));
 	};
 
-	addColor = color => {
+	addColor = (color) => {
 		const {bg, palette} = this.state;
 		palette.push(color);
 		this.setState({palette, current: palette.length - 1});
 		history.pushState(null, '', buildUrl(bg, palette));
 	};
 
-	updatePalette = e => {
+	updatePalette = (e) => {
 		const rgbs = e.target.value.split(/[,\n]/).map(hex2rgb);
-		if (rgbs.some(c => !c)) {
+		if (rgbs.some((c) => !c)) {
 			alert('Invalid color found');
 		} else {
 			const palette = rgbs.map(rbg2lch);
@@ -100,7 +100,7 @@ class App extends Component {
 		}
 	};
 
-	updateBG = e => {
+	updateBG = (e) => {
 		const bgText = e.target.value;
 		const rgb = hex2rgb(bgText);
 		if (rgb) {
@@ -115,7 +115,7 @@ class App extends Component {
 	startGenerate = () => this.setState({showGenerate: true});
 	cancelGenerate = () => this.setState({showGenerate: false});
 
-	savePalette = palette => {
+	savePalette = (palette) => {
 		this.setState({palette, current: 0, showGenerate: false});
 		history.pushState(null, '', buildUrl(this.state.bg, palette));
 	};
@@ -130,19 +130,19 @@ class App extends Component {
 
 	cancelChange = () => this.setState({palette: this.state.originalPalette, originalPalette: null});
 
-	updateLightness = l => {
+	updateLightness = (l) => {
 		const {palette, originalPalette} = this.state;
 		this.setState({palette: palette.map((e, i) => update(e, 0, originalPalette[i][0] + l))});
 	};
 
-	updateChroma = c => {
+	updateChroma = (c) => {
 		const {palette, originalPalette} = this.state;
 		this.setState({
 			palette: palette.map((e, i) => update(e, 1, isNaN(e[2]) ? 0 : max(originalPalette[i][1] + c, 0))),
 		});
 	};
 
-	updateHue = h => {
+	updateHue = (h) => {
 		const {palette, originalPalette} = this.state;
 		this.setState({
 			palette: palette.map((e, i) => update(e, 2, isNaN(e[2]) ? NaN : originalPalette[i][2] + (h % 360))),

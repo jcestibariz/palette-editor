@@ -10,8 +10,8 @@ module.exports = {
 						options: {
 							cacheDirectory: true,
 							presets: [
-								['@babel/env', {modules: false, targets: {browsers: 'chrome >= 68'}}],
-								['@babel/react', {pragma: 'preact.h'}],
+								['@babel/env', {modules: false, targets: {browsers: 'chrome >= 88'}}],
+								['@babel/react', {runtime: 'automatic', importSource: 'preact', useSpread: true}],
 							],
 							plugins: ['@babel/proposal-class-properties'],
 						},

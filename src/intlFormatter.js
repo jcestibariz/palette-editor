@@ -1,1 +1,1 @@
-export default fmt => x => fmt.format(x);
+export default (fmt) => (x) => fmt.format(x);

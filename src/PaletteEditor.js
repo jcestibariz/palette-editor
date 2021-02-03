@@ -1,4 +1,4 @@
-import preact, {Component} from 'preact';
+import {Component} from 'preact';
 import PropTypes from 'prop-types';
 
 import Slider from './Slider';
@@ -15,9 +15,9 @@ export default class PaletteEditor extends Component {
 
 	state = {l: 0, c: 0, h: 0};
 
-	setL = l => (this.setState({l}), this.props.onLightnessChange(l));
-	setC = c => (this.setState({c}), this.props.onChromaChange(c));
-	setH = h => (this.setState({h}), this.props.onHueChange(h));
+	setL = (l) => (this.setState({l}), this.props.onLightnessChange(l));
+	setC = (c) => (this.setState({c}), this.props.onChromaChange(c));
+	setH = (h) => (this.setState({h}), this.props.onHueChange(h));
 
 	render() {
 		const {className, onApply, onCancel} = this.props;

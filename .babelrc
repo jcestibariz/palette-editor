@@ -3,7 +3,8 @@
     "test": {
       "sourceMaps": "both",
       "presets": [
-        ["@babel/env", {"targets": {"node":  true}}], ["@babel/react", {"pragma": "preact.h"}]
+        ["@babel/env", {"targets": {"node":  true}}],
+        ["@babel/react", {"runtime": "automatic", "importSource": "preact", "useSpread": true}]
       ],
       "plugins": ["@babel/proposal-class-properties"]
     }

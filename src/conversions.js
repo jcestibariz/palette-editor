@@ -7,14 +7,14 @@ const refZ = 108.883;
 const refU = (4 * refX) / (refX + 15 * refY + 3 * refZ);
 const refV = (9 * refY) / (refX + 15 * refY + 3 * refZ);
 
-export const isClipped = rgb => rgb.map(round).some(c => c < 0 || c > 255);
+export const isClipped = (rgb) => rgb.map(round).some((c) => c < 0 || c > 255);
 
-export const rgb2hex = rgb => {
-	const [r, g, b] = rgb.map(c => round(c < 0 ? 0 : c > 255 ? 255 : c));
+export const rgb2hex = (rgb) => {
+	const [r, g, b] = rgb.map((c) => round(c < 0 ? 0 : c > 255 ? 255 : c));
 	return '#' + ((r << 16) + (g << 8) + b).toString(16).padStart(6, '0');
 };
 
-export const hex2rgb = hex => {
+export const hex2rgb = (hex) => {
 	const m6 = /^\s*#?([0-9a-f]{6})\s*$/i.exec(hex);
 	if (m6) {
 		const n = parseInt(m6[1], 16);
@@ -23,7 +23,7 @@ export const hex2rgb = hex => {
 	const m3 = /^\s*#?([0-9a-f]{3})\s*$/i.exec(hex);
 	if (m3) {
 		const n = parseInt(m3[1], 16);
-		return [(n >> 8) & 15, (n >> 4) & 15, n & 15].map(c => (c << 4) + c);
+		return [(n >> 8) & 15, (n >> 4) & 15, n & 15].map((c) => (c << 4) + c);
 	}
 	return null;
 };

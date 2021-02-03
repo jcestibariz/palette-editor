@@ -1,4 +1,4 @@
-import preact, {Component} from 'preact';
+import {Component} from 'preact';
 import PropTypes from 'prop-types';
 
 class Slider extends Component {
@@ -11,16 +11,16 @@ class Slider extends Component {
 		onValueChange: PropTypes.func,
 	};
 
-	setTrackElement = element => (this.trackElement = element);
+	setTrackElement = (element) => (this.trackElement = element);
 
-	handleTrackClick = event => {
+	handleTrackClick = (event) => {
 		if (!this.props.disabled) {
 			let p = event.clientX - this.trackStart;
 			this.props.onValueChange(this.props.min + p / this.factor);
 		}
 	};
 
-	handleMouseDown = event => {
+	handleMouseDown = (event) => {
 		event.preventDefault();
 		if (!this.props.disabled) {
 			this.active = true;
@@ -31,7 +31,7 @@ class Slider extends Component {
 		}
 	};
 
-	handleMouseMove = event => {
+	handleMouseMove = (event) => {
 		const p = event.pageX - this.offset;
 		if (p >= 0 && p <= this.trackWidth) {
 			this.current = p;
@@ -46,14 +46,14 @@ class Slider extends Component {
 		}
 	};
 
-	handleMouseUp = event => {
+	handleMouseUp = (event) => {
 		event.preventDefault();
 		this.active = false;
 		document.removeEventListener('mousemove', this.handleMouseMove);
 		document.removeEventListener('mouseup', this.handleMouseUp);
 	};
 
-	handleKeyDown = event => {
+	handleKeyDown = (event) => {
 		const {min, max, value, onValueChange} = this.props;
 		const step = (event.ctrlKey ? 10 : 1) / this.factor;
 		switch (event.code) {
