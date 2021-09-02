@@ -3,26 +3,26 @@
   "version": "1.0.0",
   "description": "Edit palettes in L*a*b* space",
   "scripts": {
-    "start": "webpack-dev-server --open --port 8090 --mode development --content-base public",
-    "build": "webpack -p && cp public/* dist/",
+    "start": "webpack s --open --port 8090 --mode development",
+    "build": "webpack b --mode production && cp public/* dist/",
     "test": "jest"
   },
   "license": "ISC",
   "dependencies": {
-    "preact": "^10.5.13",
+    "preact": "^10.5.14",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/preset-env": "^7.14.2",
-    "@babel/preset-react": "^7.13.13",
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-react": "^7.14.5",
     "babel-loader": "^8.2.2",
-    "jest": "^26.6.3",
-    "prettier": "^2.3.0",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.2"
+    "jest": "^27.1.0",
+    "prettier": "^2.3.2",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.1.0"
   },
   "jest": {
     "collectCoverage": true
