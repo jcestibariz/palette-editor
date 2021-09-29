@@ -1,4 +1,18 @@
-import {isClipped, rgb2hex, hex2rgb, xyz2rgb, rgb2xyz, xyz2luv, luv2xyz, luv2lch, lch2luv} from '../src/conversions';
+import {
+	isClipped,
+	rgb2hex,
+	hex2rgb,
+	xyz2rgb,
+	rgb2xyz,
+	xyz2lab,
+	lab2xyz,
+	lab2lch,
+	lch2lab,
+	xyz2luv,
+	luv2xyz,
+	luv2lch,
+	lch2luv,
+} from '../src/conversions';
 
 describe('conversions', () => {
 	describe('isClipped', () => {
@@ -101,6 +115,112 @@ describe('conversions', () => {
 			expect(x).toBeCloseTo(95.047, 1e-3);
 			expect(y).toBeCloseTo(100.0, 1e-3);
 			expect(z).toBeCloseTo(108.883, 1e-3);
+		});
+	});
+
+	describe('xyz2lab', () => {
+		it('returns expected result for * > epsilon', () => {
+			const [l, a, b] = xyz2lab([11.6368, 6.2359, 2.8396]);
+			expect(l).toBeCloseTo(30, 1e-3);
+			expect(a).toBeCloseTo(50, 1e-3);
+			expect(b).toBeCloseTo(20, 1e-3);
+		});
+
+		it('returns expected result for * <= epsilon', () => {
+			const [l, a, b] = xyz2lab([0.6877, 0.7749, 0.0048]);
+			expect(l).toBeCloseTo(7, 1e-3);
+			expect(a).toBeCloseTo(-2, 1e-3);
+			expect(b).toBeCloseTo(12, 1e-3);
+		});
+
+		it('returns expected result for black', () => {
+			const [l, a, b] = xyz2lab([0, 0, 0]);
+			expect(l).toBeCloseTo(0, 1e-3);
+			expect(a).toBeCloseTo(0, 1e-3);
+			expect(b).toBeCloseTo(0, 1e-3);
+		});
+
+		it('returns expected result for white', () => {
+			const [l, a, b] = xyz2lab([95.047, 100.0, 108.883]);
+			expect(l).toBeCloseTo(100, 1e-3);
+			expect(a).toBeCloseTo(0, 1e-3);
+			expect(b).toBeCloseTo(0, 1e-3);
+		});
+	});
+
+	describe('lab2xyz', () => {
+		it('returns expected result for * > epsilon', () => {
+			const [x, y, z] = lab2xyz([30, 50, 20]);
+			expect(x).toBeCloseTo(11.6368, 1e-3);
+			expect(y).toBeCloseTo(6.2359, 1e-3);
+			expect(z).toBeCloseTo(2.8396, 1e-3);
+		});
+
+		it('returns expected result for l <= epsilon', () => {
+			const [x, y, z] = lab2xyz([7, -2, 12]);
+			expect(x).toBeCloseTo(0.6877, 1e-3);
+			expect(y).toBeCloseTo(0.7749, 1e-3);
+			expect(z).toBeCloseTo(0.0048, 1e-3);
+		});
+
+		it('returns expected result for black', () => {
+			const [x, y, z] = lab2xyz([0, 0, 0]);
+			expect(x).toBeCloseTo(0, 1e-3);
+			expect(y).toBeCloseTo(0, 1e-3);
+			expect(z).toBeCloseTo(0, 1e-3);
+		});
+
+		it('returns expected result for white', () => {
+			const [x, y, z] = lab2xyz([100, 0, 0]);
+			expect(x).toBeCloseTo(95.047, 1e-3);
+			expect(y).toBeCloseTo(100.0, 1e-3);
+			expect(z).toBeCloseTo(108.883, 1e-3);
+		});
+	});
+
+	describe('lab2lch', () => {
+		it('returns expected result', () => {
+			const [l, c, h] = lab2lch([71.607, -9.951, -28.148]);
+			expect(l).toBeCloseTo(71.607, 1e-3);
+			expect(c).toBeCloseTo(29.855, 1e-3);
+			expect(h).toBeCloseTo(250.531, 1e-3);
+		});
+
+		it('returns expected result for black', () => {
+			const [l, c, h] = lab2lch([0, 0, 0]);
+			expect(l).toBeCloseTo(0, 1e-3);
+			expect(c).toBeCloseTo(0, 1e-3);
+			expect(h).toBeCloseTo(0, 1e-3);
+		});
+
+		it('returns expected result for white', () => {
+			const [l, c, h] = lab2lch([100, 0, 0]);
+			expect(l).toBeCloseTo(100, 1e-3);
+			expect(c).toBeCloseTo(0, 1e-3);
+			expect(h).toBeCloseTo(0, 1e-3);
+		});
+	});
+
+	describe('lch2lab', () => {
+		it('returns expected result', () => {
+			const [l, a, b] = lch2lab([71.607, 29.855, 250.531]);
+			expect(l).toBeCloseTo(71.607, 1e-3);
+			expect(a).toBeCloseTo(-9.951, 1e-3);
+			expect(b).toBeCloseTo(-28.148, 1e-3);
+		});
+
+		it('returns expected result for black', () => {
+			const [l, a, b] = lch2lab([0, 0, 0]);
+			expect(l).toBeCloseTo(0, 1e-3);
+			expect(a).toBeCloseTo(0, 1e-3);
+			expect(b).toBeCloseTo(0, 1e-3);
+		});
+
+		it('returns expected result for white', () => {
+			const [l, a, b] = lch2lab([100, 0, 0]);
+			expect(l).toBeCloseTo(100, 1e-3);
+			expect(a).toBeCloseTo(0, 1e-3);
+			expect(b).toBeCloseTo(0, 1e-3);
 		});
 	});
 
