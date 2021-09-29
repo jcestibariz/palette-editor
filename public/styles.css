@@ -116,14 +116,12 @@ input[aria-invalid='true'] {
 
 .UVPlane__dot {
 	position: absolute;
+	left: 266px;
+	top: 266px;
 	width: 9px;
 	height: 9px;
 	border-radius: 50%;
-}
-
-.UVPlane__dot--current {
-	width: 13px;
-	height: 13px;
+	transform-origin: center;
 }
 
 .LPlane {

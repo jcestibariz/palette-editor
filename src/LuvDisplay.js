@@ -3,8 +3,8 @@ import {lch2luv, luv2xyz, rgb2hex, xyz2rgb} from './conversions';
 
 const luv2hex = (luv) => rgb2hex(xyz2rgb(luv2xyz(luv)));
 
-const getUVStyle = (color, offset) => ({
-	transform: `translate(${270 + 1.5 * color.a - offset}px, ${270 - 1.5 * color.b - offset}px)`,
+const getUVStyle = (color, current) => ({
+	transform: `translate(${1.5 * color.a}px, ${-1.5 * color.b}px)${current ? ' scale(1.5)' : ''}`,
 	backgroundColor: color.hex,
 });
 const getLStyle = (color) => ({transform: `translateY(${529 - 5.2 * color.l}px)`, backgroundColor: color.hex});
@@ -27,11 +27,7 @@ const LuvDisplay = ({palette, current, onSelect}) => {
 				<div className="UVPlane__y" />
 				<div className="UVPlane__label">u*v*</div>
 				{colors.map((c, i) => (
-					<div
-						className={getDotClass('UVPlane__dot', i, current)}
-						style={getUVStyle(c, i === current ? 6 : 4)}
-						onClick={() => onSelect(i)}
-					/>
+					<div className="UVPlane__dot" style={getUVStyle(c, i === current)} onClick={() => onSelect(i)} />
 				))}
 			</div>
 
