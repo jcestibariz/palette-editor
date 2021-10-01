@@ -60,273 +60,273 @@ describe('conversions', () => {
 
 	describe('xyz2rgb', () => {
 		it('return expected result for values above threshold', () => {
-			const [r, g, b] = xyz2rgb([41.405, 43.077, 65.796]);
-			expect(r).toBeCloseTo(160, 1e-3);
-			expect(g).toBeCloseTo(176, 1e-3);
-			expect(b).toBeCloseTo(208, 1e-3);
+			const [r, g, b] = xyz2rgb([0.414047, 0.430772, 0.657955]);
+			expect(r).toBeCloseTo(160, 2);
+			expect(g).toBeCloseTo(176, 2);
+			expect(b).toBeCloseTo(208, 2);
 		});
 
 		it('return expected result for values below threshold', () => {
-			const [r, g, b] = xyz2rgb([0.101, 0.113, 0.189]);
-			expect(r).toBeCloseTo(2, 1e-3);
-			expect(g).toBeCloseTo(4, 1e-3);
-			expect(b).toBeCloseTo(6, 1e-3);
+			const [r, g, b] = xyz2rgb([0.001013, 0.001129, 0.001887]);
+			expect(r).toBeCloseTo(2, 2);
+			expect(g).toBeCloseTo(4, 2);
+			expect(b).toBeCloseTo(6, 2);
 		});
 
 		it('return expected result for black', () => {
 			const [r, g, b] = xyz2rgb([0, 0, 0]);
-			expect(r).toBeCloseTo(0, 1e-3);
-			expect(g).toBeCloseTo(0, 1e-3);
-			expect(b).toBeCloseTo(0, 1e-3);
+			expect(r).toBeCloseTo(0, 2);
+			expect(g).toBeCloseTo(0, 2);
+			expect(b).toBeCloseTo(0, 2);
 		});
 
 		it('return expected result for white', () => {
-			const [r, g, b] = xyz2rgb([95.047, 100.0, 108.883]);
-			expect(r).toBeCloseTo(255, 1e-3);
-			expect(g).toBeCloseTo(255, 1e-3);
-			expect(b).toBeCloseTo(255, 1e-3);
+			const [r, g, b] = xyz2rgb([0.95047, 1.0, 1.08883]);
+			expect(r).toBeCloseTo(255, 2);
+			expect(g).toBeCloseTo(255, 2);
+			expect(b).toBeCloseTo(255, 2);
 		});
 	});
 
 	describe('rgb2xyz', () => {
 		it('return expected result for values above threshold', () => {
 			const [x, y, z] = rgb2xyz([160, 176, 208]);
-			expect(x).toBeCloseTo(41.405, 1e-3);
-			expect(y).toBeCloseTo(43.077, 1e-3);
-			expect(z).toBeCloseTo(65.796, 1e-3);
+			expect(x).toBeCloseTo(0.414047, 6);
+			expect(y).toBeCloseTo(0.430772, 6);
+			expect(z).toBeCloseTo(0.657955, 6);
 		});
 
 		it('return expected result for values be below threshold', () => {
 			const [x, y, z] = rgb2xyz([2, 4, 6]);
-			expect(x).toBeCloseTo(0.101, 1e-3);
-			expect(y).toBeCloseTo(0.113, 1e-3);
-			expect(z).toBeCloseTo(0.189, 1e-3);
+			expect(x).toBeCloseTo(0.001013, 6);
+			expect(y).toBeCloseTo(0.001129, 6);
+			expect(z).toBeCloseTo(0.001887, 6);
 		});
 
 		it('return expected result for black', () => {
 			const [x, y, z] = rgb2xyz([0, 0, 0]);
-			expect(x).toBeCloseTo(0, 1e-3);
-			expect(y).toBeCloseTo(0, 1e-3);
-			expect(z).toBeCloseTo(0, 1e-3);
+			expect(x).toBeCloseTo(0, 6);
+			expect(y).toBeCloseTo(0, 6);
+			expect(z).toBeCloseTo(0, 6);
 		});
 
 		it('return expected result for white', () => {
 			const [x, y, z] = rgb2xyz([255, 255, 255]);
-			expect(x).toBeCloseTo(95.047, 1e-3);
-			expect(y).toBeCloseTo(100.0, 1e-3);
-			expect(z).toBeCloseTo(108.883, 1e-3);
+			expect(x).toBeCloseTo(0.95047, 6);
+			expect(y).toBeCloseTo(1.0, 6);
+			expect(z).toBeCloseTo(1.08883, 6);
 		});
 	});
 
 	describe('xyz2lab', () => {
 		it('returns expected result for * > epsilon', () => {
-			const [l, a, b] = xyz2lab([11.6368, 6.2359, 2.8396]);
-			expect(l).toBeCloseTo(30, 1e-3);
-			expect(a).toBeCloseTo(50, 1e-3);
-			expect(b).toBeCloseTo(20, 1e-3);
+			const [l, a, b] = xyz2lab([0.116368, 0.062359, 0.028396]);
+			expect(l).toBeCloseTo(30, 3);
+			expect(a).toBeCloseTo(50, 3);
+			expect(b).toBeCloseTo(20, 3);
 		});
 
 		it('returns expected result for * <= epsilon', () => {
-			const [l, a, b] = xyz2lab([0.6877, 0.7749, 0.0048]);
-			expect(l).toBeCloseTo(7, 1e-3);
-			expect(a).toBeCloseTo(-2, 1e-3);
-			expect(b).toBeCloseTo(12, 1e-3);
+			const [l, a, b] = xyz2lab([0.006877, 0.007749, 0.000048]);
+			expect(l).toBeCloseTo(7, 3);
+			expect(a).toBeCloseTo(-2, 3);
+			expect(b).toBeCloseTo(12, 3);
 		});
 
 		it('returns expected result for black', () => {
 			const [l, a, b] = xyz2lab([0, 0, 0]);
-			expect(l).toBeCloseTo(0, 1e-3);
-			expect(a).toBeCloseTo(0, 1e-3);
-			expect(b).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(0, 3);
+			expect(a).toBeCloseTo(0, 3);
+			expect(b).toBeCloseTo(0, 3);
 		});
 
 		it('returns expected result for white', () => {
-			const [l, a, b] = xyz2lab([95.047, 100.0, 108.883]);
-			expect(l).toBeCloseTo(100, 1e-3);
-			expect(a).toBeCloseTo(0, 1e-3);
-			expect(b).toBeCloseTo(0, 1e-3);
+			const [l, a, b] = xyz2lab([0.95047, 1.0, 1.08883]);
+			expect(l).toBeCloseTo(100, 3);
+			expect(a).toBeCloseTo(0, 3);
+			expect(b).toBeCloseTo(0, 3);
 		});
 	});
 
 	describe('lab2xyz', () => {
 		it('returns expected result for * > epsilon', () => {
 			const [x, y, z] = lab2xyz([30, 50, 20]);
-			expect(x).toBeCloseTo(11.6368, 1e-3);
-			expect(y).toBeCloseTo(6.2359, 1e-3);
-			expect(z).toBeCloseTo(2.8396, 1e-3);
+			expect(x).toBeCloseTo(0.116368, 6);
+			expect(y).toBeCloseTo(0.062359, 6);
+			expect(z).toBeCloseTo(0.028396, 6);
 		});
 
 		it('returns expected result for l <= epsilon', () => {
 			const [x, y, z] = lab2xyz([7, -2, 12]);
-			expect(x).toBeCloseTo(0.6877, 1e-3);
-			expect(y).toBeCloseTo(0.7749, 1e-3);
-			expect(z).toBeCloseTo(0.0048, 1e-3);
+			expect(x).toBeCloseTo(0.006877, 6);
+			expect(y).toBeCloseTo(0.007749, 6);
+			expect(z).toBeCloseTo(0.000048, 6);
 		});
 
 		it('returns expected result for black', () => {
 			const [x, y, z] = lab2xyz([0, 0, 0]);
-			expect(x).toBeCloseTo(0, 1e-3);
-			expect(y).toBeCloseTo(0, 1e-3);
-			expect(z).toBeCloseTo(0, 1e-3);
+			expect(x).toBeCloseTo(0, 6);
+			expect(y).toBeCloseTo(0, 6);
+			expect(z).toBeCloseTo(0, 6);
 		});
 
 		it('returns expected result for white', () => {
 			const [x, y, z] = lab2xyz([100, 0, 0]);
-			expect(x).toBeCloseTo(95.047, 1e-3);
-			expect(y).toBeCloseTo(100.0, 1e-3);
-			expect(z).toBeCloseTo(108.883, 1e-3);
+			expect(x).toBeCloseTo(0.95047, 6);
+			expect(y).toBeCloseTo(1.0, 6);
+			expect(z).toBeCloseTo(1.08883, 6);
 		});
 	});
 
 	describe('lab2lch', () => {
 		it('returns expected result', () => {
 			const [l, c, h] = lab2lch([71.607, -9.951, -28.148]);
-			expect(l).toBeCloseTo(71.607, 1e-3);
-			expect(c).toBeCloseTo(29.855, 1e-3);
-			expect(h).toBeCloseTo(250.531, 1e-3);
+			expect(l).toBeCloseTo(71.607, 3);
+			expect(c).toBeCloseTo(29.855, 3);
+			expect(h).toBeCloseTo(250.53, 3);
 		});
 
 		it('returns expected result for black', () => {
 			const [l, c, h] = lab2lch([0, 0, 0]);
-			expect(l).toBeCloseTo(0, 1e-3);
-			expect(c).toBeCloseTo(0, 1e-3);
-			expect(h).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(0, 3);
+			expect(c).toBeCloseTo(0, 3);
+			expect(h).toBeCloseTo(0, 3);
 		});
 
 		it('returns expected result for white', () => {
 			const [l, c, h] = lab2lch([100, 0, 0]);
-			expect(l).toBeCloseTo(100, 1e-3);
-			expect(c).toBeCloseTo(0, 1e-3);
-			expect(h).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(100, 3);
+			expect(c).toBeCloseTo(0, 3);
+			expect(h).toBeCloseTo(0, 3);
 		});
 	});
 
 	describe('lch2lab', () => {
 		it('returns expected result', () => {
 			const [l, a, b] = lch2lab([71.607, 29.855, 250.531]);
-			expect(l).toBeCloseTo(71.607, 1e-3);
-			expect(a).toBeCloseTo(-9.951, 1e-3);
-			expect(b).toBeCloseTo(-28.148, 1e-3);
+			expect(l).toBeCloseTo(71.607, 3);
+			expect(a).toBeCloseTo(-9.951, 3);
+			expect(b).toBeCloseTo(-28.148, 3);
 		});
 
 		it('returns expected result for black', () => {
 			const [l, a, b] = lch2lab([0, 0, 0]);
-			expect(l).toBeCloseTo(0, 1e-3);
-			expect(a).toBeCloseTo(0, 1e-3);
-			expect(b).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(0, 3);
+			expect(a).toBeCloseTo(0, 3);
+			expect(b).toBeCloseTo(0, 3);
 		});
 
 		it('returns expected result for white', () => {
 			const [l, a, b] = lch2lab([100, 0, 0]);
-			expect(l).toBeCloseTo(100, 1e-3);
-			expect(a).toBeCloseTo(0, 1e-3);
-			expect(b).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(100, 3);
+			expect(a).toBeCloseTo(0, 3);
+			expect(b).toBeCloseTo(0, 3);
 		});
 	});
 
 	describe('xyz2luv', () => {
 		it('returns expected result for y > 8', () => {
-			const [l, u, v] = xyz2luv([7.062, 6.236, -4.656]);
-			expect(l).toBeCloseTo(30, 1e-3);
-			expect(u).toBeCloseTo(50, 1e-3);
-			expect(v).toBeCloseTo(70, 1e-3);
+			const [l, u, v] = xyz2luv([0.06897, 0.062359, 0.03435]);
+			expect(l).toBeCloseTo(30, 3);
+			expect(u).toBeCloseTo(20, 3);
+			expect(v).toBeCloseTo(15, 3);
 		});
 
 		it('returns expected result for y <= 8', () => {
-			const [l, u, v] = xyz2luv([0.802, 0.775, -1.581]);
-			expect(l).toBeCloseTo(7, 1e-3);
-			expect(u).toBeCloseTo(20, 1e-3);
-			expect(v).toBeCloseTo(40, 1e-3);
+			const [l, u, v] = xyz2luv([0.007482, 0.007749, 0.00414]);
+			expect(l).toBeCloseTo(7, 2);
+			expect(u).toBeCloseTo(2, 2);
+			expect(v).toBeCloseTo(4, 2);
 		});
 
 		it('returns expected result for black', () => {
 			const [l, u, v] = xyz2luv([0, 0, 0]);
-			expect(l).toBeCloseTo(0, 1e-3);
-			expect(u).toBeCloseTo(0, 1e-3);
-			expect(v).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(0, 3);
+			expect(u).toBeCloseTo(0, 3);
+			expect(v).toBeCloseTo(0, 3);
 		});
 
 		it('returns expected result for white', () => {
-			const [l, u, v] = xyz2luv([95.047, 100.0, 108.883]);
-			expect(l).toBeCloseTo(100, 1e-3);
-			expect(u).toBeCloseTo(0, 1e-3);
-			expect(v).toBeCloseTo(0, 1e-3);
+			const [l, u, v] = xyz2luv([0.95047, 1.0, 1.08883]);
+			expect(l).toBeCloseTo(100, 3);
+			expect(u).toBeCloseTo(0, 3);
+			expect(v).toBeCloseTo(0, 3);
 		});
 	});
 
 	describe('luv2xyz', () => {
 		it('returns expected result for l > 8', () => {
-			const [x, y, z] = luv2xyz([30, 50, 70]);
-			expect(x).toBeCloseTo(7.062, 1e-3);
-			expect(y).toBeCloseTo(6.236, 1e-3);
-			expect(z).toBeCloseTo(-4.656, 1e-3);
+			const [x, y, z] = luv2xyz([30, 20, 15]);
+			expect(x).toBeCloseTo(0.06897, 6);
+			expect(y).toBeCloseTo(0.062359, 6);
+			expect(z).toBeCloseTo(0.03435, 6);
 		});
 
 		it('returns expected result for l <= 8', () => {
-			const [x, y, z] = luv2xyz([7, 20, 40]);
-			expect(x).toBeCloseTo(0.802, 1e-3);
-			expect(y).toBeCloseTo(0.775, 1e-3);
-			expect(z).toBeCloseTo(-1.581, 1e-3);
+			const [x, y, z] = luv2xyz([7, 2, 4]);
+			expect(x).toBeCloseTo(0.007482, 6);
+			expect(y).toBeCloseTo(0.007749, 6);
+			expect(z).toBeCloseTo(0.00414, 6);
 		});
 
 		it('returns expected result for black', () => {
 			const [x, y, z] = luv2xyz([0, 0, 0]);
-			expect(x).toBeCloseTo(0, 1e-3);
-			expect(y).toBeCloseTo(0, 1e-3);
-			expect(z).toBeCloseTo(0, 1e-3);
+			expect(x).toBeCloseTo(0, 6);
+			expect(y).toBeCloseTo(0, 6);
+			expect(z).toBeCloseTo(0, 6);
 		});
 
 		it('returns expected result for white', () => {
 			const [x, y, z] = luv2xyz([100, 0, 0]);
-			expect(x).toBeCloseTo(95.047, 1e-3);
-			expect(y).toBeCloseTo(100.0, 1e-3);
-			expect(z).toBeCloseTo(108.883, 1e-3);
+			expect(x).toBeCloseTo(0.95047, 6);
+			expect(y).toBeCloseTo(1.0, 6);
+			expect(z).toBeCloseTo(1.08883, 6);
 		});
 	});
 
 	describe('luv2lch', () => {
 		it('returns expected result', () => {
 			const [l, c, h] = luv2lch([71.607, -9.951, -28.148]);
-			expect(l).toBeCloseTo(71.607, 1e-3);
-			expect(c).toBeCloseTo(29.855, 1e-3);
-			expect(h).toBeCloseTo(250.531, 1e-3);
+			expect(l).toBeCloseTo(71.607, 3);
+			expect(c).toBeCloseTo(29.855, 3);
+			expect(h).toBeCloseTo(250.53, 3);
 		});
 
 		it('returns expected result for black', () => {
 			const [l, c, h] = luv2lch([0, 0, 0]);
-			expect(l).toBeCloseTo(0, 1e-3);
-			expect(c).toBeCloseTo(0, 1e-3);
-			expect(h).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(0, 3);
+			expect(c).toBeCloseTo(0, 3);
+			expect(h).toBeCloseTo(0, 3);
 		});
 
 		it('returns expected result for white', () => {
 			const [l, c, h] = luv2lch([100, 0, 0]);
-			expect(l).toBeCloseTo(100, 1e-3);
-			expect(c).toBeCloseTo(0, 1e-3);
-			expect(h).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(100, 3);
+			expect(c).toBeCloseTo(0, 3);
+			expect(h).toBeCloseTo(0, 3);
 		});
 	});
 
 	describe('lch2luv', () => {
 		it('returns expected result', () => {
 			const [l, u, v] = lch2luv([71.607, 29.855, 250.531]);
-			expect(l).toBeCloseTo(71.607, 1e-3);
-			expect(u).toBeCloseTo(-9.951, 1e-3);
-			expect(v).toBeCloseTo(-28.148, 1e-3);
+			expect(l).toBeCloseTo(71.607, 3);
+			expect(u).toBeCloseTo(-9.951, 3);
+			expect(v).toBeCloseTo(-28.148, 3);
 		});
 
 		it('returns expected result for black', () => {
 			const [l, u, v] = lch2luv([0, 0, 0]);
-			expect(l).toBeCloseTo(0, 1e-3);
-			expect(u).toBeCloseTo(0, 1e-3);
-			expect(v).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(0, 3);
+			expect(u).toBeCloseTo(0, 3);
+			expect(v).toBeCloseTo(0, 3);
 		});
 
 		it('returns expected result for white', () => {
 			const [l, u, v] = lch2luv([100, 0, 0]);
-			expect(l).toBeCloseTo(100, 1e-3);
-			expect(u).toBeCloseTo(0, 1e-3);
-			expect(v).toBeCloseTo(0, 1e-3);
+			expect(l).toBeCloseTo(100, 3);
+			expect(u).toBeCloseTo(0, 3);
+			expect(v).toBeCloseTo(0, 3);
 		});
 	});
 });

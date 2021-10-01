@@ -4,16 +4,16 @@ const epsilon = 216 / 24389; // appr. .008856
 const kappa = 24389 / 27; // appr. 903.296
 
 // The D65 standard illuminant
-const refX = 95.047;
-const refY = 100.0;
-const refZ = 108.883;
+const refX = 0.95047;
+const refY = 1.0;
+const refZ = 1.08883;
 const refU = (4 * refX) / (refX + 15 * refY + 3 * refZ);
 const refV = (9 * refY) / (refX + 15 * refY + 3 * refZ);
 
 export const isClipped = (rgb) => rgb.map(round).some((c) => c < 0 || c > 255);
 
 export const rgb2hex = (rgb) => {
-	const [r, g, b] = rgb.map((c) => round(c < 0 ? 0 : c > 255 ? 255 : c));
+	const [r, g, b] = rgb.map((c) => (c < 0 ? 0 : c > 255 ? 255 : round(c)));
 	return '#' + ((r << 16) + (g << 8) + b).toString(16).padStart(6, '0');
 };
 
@@ -32,13 +32,9 @@ export const hex2rgb = (hex) => {
 };
 
 export const xyz2rgb = ([x, y, z]) => {
-	const xn = x / 100;
-	const yn = y / 100;
-	const zn = z / 100;
-
-	const rl = xn * 3.2406 + yn * -1.5372 + zn * -0.4986;
-	const gl = xn * -0.9689 + yn * 1.8758 + zn * 0.0415;
-	const bl = xn * 0.0557 + yn * -0.204 + zn * 1.057;
+	const rl = x * 3.2404542 + y * -1.5371385 + z * -0.4985314;
+	const gl = x * -0.969266 + y * 1.8760108 + z * 0.041556;
+	const bl = x * 0.0556434 + y * -0.2040259 + z * 1.0572252;
 
 	const rc = rl > 0.0031308 ? 1.055 * pow(rl, 1 / 2.4) - 0.055 : 12.92 * rl;
 	const gc = gl > 0.0031308 ? 1.055 * pow(gl, 1 / 2.4) - 0.055 : 12.92 * gl;
@@ -56,11 +52,11 @@ export const rgb2xyz = ([r, g, b]) => {
 	const gl = gn > 0.04045 ? pow((gn + 0.055) / 1.055, 2.4) : gn / 12.92;
 	const bl = bn > 0.04045 ? pow((bn + 0.055) / 1.055, 2.4) : bn / 12.92;
 
-	const x = rl * 0.4124 + gl * 0.3576 + bl * 0.1805;
-	const y = rl * 0.2126 + gl * 0.7152 + bl * 0.0722;
-	const z = rl * 0.0193 + gl * 0.1192 + bl * 0.9505;
+	const x = rl * 0.4124564 + gl * 0.3575761 + bl * 0.1804375;
+	const y = rl * 0.2126729 + gl * 0.7151522 + bl * 0.072175;
+	const z = rl * 0.0193339 + gl * 0.119192 + bl * 0.9503041;
 
-	return [x * 100, y * 100, z * 100];
+	return [x, y, z];
 };
 
 export const xyz2lab = ([x, y, z]) => {
